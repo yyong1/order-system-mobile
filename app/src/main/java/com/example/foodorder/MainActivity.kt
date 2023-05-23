@@ -37,6 +37,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             FoodOrderTheme {
                 // A surface container using the 'background' color from the theme
+                HomeScreen()
             }
         }
     }
@@ -176,7 +177,10 @@ fun Header() {
                 tint = Orange500
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = "California, US") // Should be dynamic rendering
+
+            // Should be dynamic rendering
+
+            Text(text = "California, US")
             Spacer(modifier = Modifier.width(8.dp))
             Icon(
                 painter = painterResource(id = R.drawable.arrow_down),
@@ -220,7 +224,7 @@ fun CategoryList(categories: List<CategoryData>) {
         mutableStateOf(0)
     }
 
-    LazyRow(modifier = Modifier.fillMaxSize(), horizontalArrangement = Arrangement.SpaceBetween) {
+    LazyRow(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
         items(categories.size) { index ->
             CategoryItem(
                 categoryData = categories[index], selectedIndex = selectedIndex, index = index
@@ -263,7 +267,6 @@ fun PopularList(popularList: List<PopularData>) {
     LazyColumn(modifier = Modifier.fillMaxWidth()) {
         items(popularList.size) { index ->
             PopularItem(popularData = popularList[index])
-
         }
     }
 }
