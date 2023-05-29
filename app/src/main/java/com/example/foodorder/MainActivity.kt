@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -28,7 +29,17 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.foodorder.ui.theme.*
+import com.example.foodorder.data.CategoryData
+import com.example.foodorder.data.PopularData
+import com.example.foodorder.ui.theme.BlackTextColor
+import com.example.foodorder.ui.theme.CardItemBg
+import com.example.foodorder.ui.theme.FoodOrderTheme
+import com.example.foodorder.ui.theme.IconColor
+import com.example.foodorder.ui.theme.Orange500
+import com.example.foodorder.ui.theme.TextColor
+import com.example.foodorder.ui.theme.Typography
+import com.example.foodorder.ui.theme.Yellow200
+import com.example.foodorder.ui.theme.Yellow500
 
 
 class MainActivity : ComponentActivity() {
@@ -37,7 +48,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             FoodOrderTheme {
                 // A surface container using the 'background' color from the theme
-                HomeScreen()
+                Surface() {
+                    HomeScreen()
+                }
             }
         }
     }
@@ -270,7 +283,7 @@ fun PopularList(popularList: List<PopularData>) {
         }
     }
 }
-// error <----
+
 @Composable
 fun PopularItem(popularData: PopularData?) {
     Box(

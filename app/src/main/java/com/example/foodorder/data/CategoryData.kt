@@ -1,4 +1,4 @@
-package com.example.foodorder
+package com.example.foodorder.data
 
 import androidx.annotation.DrawableRes
 
