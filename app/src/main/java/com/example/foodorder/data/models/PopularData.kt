@@ -1,9 +1,12 @@
-package com.example.foodorder.data
+package com.example.foodorder.data.models
 
 import androidx.annotation.DrawableRes
-
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+@Entity(tableName = "popularData")
 data class PopularData(
-    @DrawableRes
+//    @DrawableRes
+    @PrimaryKey
     val resId: Int,
     val title: String,
     val price: Double,

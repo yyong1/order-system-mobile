@@ -29,8 +29,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.foodorder.data.CategoryData
-import com.example.foodorder.data.PopularData
+import com.example.foodorder.data.models.CategoryData
+import com.example.foodorder.data.models.PopularData
 import com.example.foodorder.ui.theme.BlackTextColor
 import com.example.foodorder.ui.theme.CardItemBg
 import com.example.foodorder.ui.theme.FoodOrderTheme
