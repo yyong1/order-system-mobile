@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">FoodOrder</string>
+    <string name="order_now">Order Now</string>
+    <string name="food">" Food"</string>
+    <string name="delivery">Delivery</string>
+    <string name="the_fastest_in">The fastest in\n</string>
 </resources>

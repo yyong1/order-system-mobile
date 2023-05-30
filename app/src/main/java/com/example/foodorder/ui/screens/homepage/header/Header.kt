@@ -1,0 +1,50 @@
+package com.example.foodorder.ui.screens.homepage.header
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import com.example.foodorder.R
+import com.example.foodorder.ui.screens.homepage.BoxWithRes
+import com.example.foodorder.ui.theme.Orange500
+
+@Composable
+fun Header() {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        BoxWithRes(resId = R.drawable.menu, description = "Menu")
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                painter = painterResource(id = R.drawable.location),
+                contentDescription = "Location",
+                modifier = Modifier.size(16.dp),
+                tint = Orange500
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+
+            // Should be dynamic rendering
+
+            Text(text = "California, US")
+            Spacer(modifier = Modifier.width(8.dp))
+            Icon(
+                painter = painterResource(id = R.drawable.arrow_down),
+                contentDescription = "Down",
+                modifier = Modifier.size(16.dp),
+                tint = Orange500
+            )
+        }
+        BoxWithRes(resId = R.drawable.search, description = "Search")
+    }
+}
