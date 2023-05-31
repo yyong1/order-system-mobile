@@ -4,13 +4,17 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.foodorder.ui.screens.homepage.HomeScreen
+import com.example.foodorder.ui.screens.homepage.*
+import com.example.foodorder.ui.screens.details.DetailsScreen
 
 @Composable
 fun Navigation(navController: NavHostController) {
     NavHost(navController = navController, startDestination = ScreensRoutes.Home.route) {
         composable(ScreensRoutes.Home.route) {
             HomeScreen()
+        }
+        composable(ScreensRoutes.Details.route) {
+            DetailsScreen()
         }
     }
 }

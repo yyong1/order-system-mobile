@@ -50,9 +50,11 @@ import com.example.foodorder.ui.theme.Typography
 import com.example.foodorder.ui.theme.Yellow200
 import com.example.foodorder.ui.theme.Yellow500
 import com.example.foodorder.R
+import com.example.foodorder.data.database.AppDatabaseProvider
 import com.example.foodorder.ui.screens.homepage.header.Header
 import com.example.foodorder.ui.screens.homepage.ordernow.OrderNowBox
 import com.example.foodorder.ui.theme.FoodOrderTheme
+import kotlin.coroutines.jvm.internal.CompletedContinuation.context
 
 @Composable
 fun HomeScreen() {
@@ -100,7 +102,7 @@ fun HomeScreen() {
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // error in this part
+            // TODO: put in the db
             PopularList(
                 popularList = listOf(
                     PopularData(
@@ -140,7 +142,8 @@ fun HomeScreen() {
         }
     }
 }
-
+val popularDataDao = AppDatabaseProvider.getDatabase(context).popularDataDao()
+val categoryDataDao = AppDatabaseProvider.getDatabase(context).categoryDataDao()
 
 @Composable
 fun BoxWithRes(
@@ -212,19 +215,19 @@ fun CategoryItem(categoryData: CategoryData, selectedIndex: MutableState<Int>, i
 }
 
 @Composable
-fun PopularList(popularList: List<PopularData>) {
+fun PopularList(popularList: List<PopularData>, onItemClick: (PopularData) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
     ) {
         for (item in popularList) {
-            PopularItem(popularData = item)
+            PopularItem(popularData = item, onItemClick = onItemClick)
         }
     }
 }
 
 @Composable
-fun PopularItem(popularData: PopularData) {
+fun PopularItem(popularData: PopularData, onItemClick: (PopularData) -> Unit) {
 
     Column {
         Box(
@@ -245,6 +248,7 @@ fun PopularItem(popularData: PopularData) {
 //                        }
 //                        navController.navigate(Destinations.Detail)
 //                    }
+                    .clickable { onItemClick(popularData) }
                     .background(
                         CardItemBg
                     )

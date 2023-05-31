@@ -4,4 +4,8 @@
     <string name="food">" Food"</string>
     <string name="delivery">Delivery</string>
     <string name="the_fastest_in">The fastest in\n</string>
+    <string name="welcome">Welcome</string>
+    <string name="sigh_in_to_continue">Sigh in to continue</string>
+    <string name="don_t_have_an_account_click_here">Don\'t have an account, click here</string>
+    <string name="sign_in">Sign in</string>
 </resources>
