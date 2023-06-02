@@ -7,9 +7,9 @@ import com.example.foodorder.data.models.User
 
 @Dao
 interface UserDao {
-    @Query("SELECT * FROM users WHERE id = :userId")
-    fun getUserById(userId: String): User?
+    @Query("SELECT * FROM users WHERE email = :userEmail")
+    suspend fun getUserByEmail(userEmail: String): User?
 
     @Insert
-    fun insertUser(user: User)
+    suspend fun insertUser(user: User)
 }

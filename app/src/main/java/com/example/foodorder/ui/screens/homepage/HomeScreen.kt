@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,14 +30,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.foodorder.data.models.CategoryData
 import com.example.foodorder.data.models.PopularData
 import com.example.foodorder.ui.theme.BlackTextColor
@@ -47,17 +42,15 @@ import com.example.foodorder.ui.theme.IconColor
 import com.example.foodorder.ui.theme.Orange500
 import com.example.foodorder.ui.theme.TextColor
 import com.example.foodorder.ui.theme.Typography
-import com.example.foodorder.ui.theme.Yellow200
 import com.example.foodorder.ui.theme.Yellow500
 import com.example.foodorder.R
-import com.example.foodorder.data.database.AppDatabaseProvider
 import com.example.foodorder.ui.screens.homepage.header.Header
 import com.example.foodorder.ui.screens.homepage.ordernow.OrderNowBox
 import com.example.foodorder.ui.theme.FoodOrderTheme
 import kotlin.coroutines.jvm.internal.CompletedContinuation.context
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavHostController) {
 
     val scrollState = rememberScrollState()
     Box(

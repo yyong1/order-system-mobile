@@ -3,54 +3,37 @@ package com.example.foodorder
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.foodorder.data.models.CategoryData
-import com.example.foodorder.data.models.PopularData
-import com.example.foodorder.ui.theme.BlackTextColor
-import com.example.foodorder.ui.theme.CardItemBg
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.compose.rememberNavController
+import com.example.foodorder.data.database.AppDatabase
+import com.example.foodorder.data.database.UserRepository
+import com.example.foodorder.ui.navigation.Navigation
 import com.example.foodorder.ui.theme.FoodOrderTheme
-import com.example.foodorder.ui.theme.IconColor
-import com.example.foodorder.ui.theme.Orange500
-import com.example.foodorder.ui.theme.TextColor
-import com.example.foodorder.ui.theme.Typography
-import com.example.foodorder.ui.theme.Yellow200
-import com.example.foodorder.ui.theme.Yellow500
+import com.example.foodorder.ui.viewmodels.UserViewModel
+import com.example.foodorder.ui.viewmodels.UserViewModelFactory
 
 
 class MainActivity : ComponentActivity() {
+    private lateinit var userViewModel: UserViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val userDao = AppDatabase.getInstance(this).userDao()
+        val userRepository = UserRepository(userDao)
+        val userViewModelFactory = UserViewModelFactory(userRepository)
+        userViewModel = ViewModelProvider(this, userViewModelFactory)[UserViewModel::class.java]
+
+
         setContent {
             FoodOrderTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    FoodOrderApp()
+                    val navController = rememberNavController()
+                    Navigation(navController = navController, userViewModel = userViewModel)
                 }
             }
         }

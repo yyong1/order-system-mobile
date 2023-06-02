@@ -1,4 +1,4 @@
-package com.example.foodorder.ui.screens.log
+package com.example.foodorder.ui.screens.reg
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -50,12 +50,12 @@ import com.example.foodorder.ui.viewmodels.UserViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen(navController: NavHostController, userViewModel: UserViewModel) {
-    Login(navController = navController, userViewModel = userViewModel)
+fun RegistrationScreen(navController: NavHostController, userViewModel: UserViewModel) {
+    Registration(navController = navController, userViewModel = userViewModel)
 }
 
 @Composable
-fun Login(navController: NavHostController, userViewModel: UserViewModel) {
+fun Registration(navController: NavHostController, userViewModel: UserViewModel) {
     val scope = rememberCoroutineScope()
     var userEmail by remember {
         mutableStateOf("")
