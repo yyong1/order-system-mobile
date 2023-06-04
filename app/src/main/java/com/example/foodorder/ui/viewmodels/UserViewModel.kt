@@ -16,7 +16,6 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
 
     suspend fun checkUser(email: String, password: String): Boolean {
         val user = userRepository.getUserByEmail(email)
-        if (user?.email == email && user?.password == password) true
-        return false
+        return (user?.email == email && user?.password == password)
     }
 }

@@ -19,6 +19,7 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.runtime.Composable
@@ -44,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.foodorder.R
+import com.example.foodorder.data.models.User
 import com.example.foodorder.ui.navigation.ScreensRoutes
 import com.example.foodorder.ui.theme.Yellow500
 import com.example.foodorder.ui.viewmodels.UserViewModel
@@ -56,7 +58,12 @@ fun RegistrationScreen(navController: NavHostController, userViewModel: UserView
 
 @Composable
 fun Registration(navController: NavHostController, userViewModel: UserViewModel) {
+
     val scope = rememberCoroutineScope()
+
+    var userName by remember {
+        mutableStateOf("")
+    }
     var userEmail by remember {
         mutableStateOf("")
     }
@@ -67,7 +74,7 @@ fun Registration(navController: NavHostController, userViewModel: UserViewModel)
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.orange_bg),
-            contentDescription = "Login bg",
+            contentDescription = "Reg bg",
             modifier = Modifier
                 .fillMaxSize()
                 .blur(6.dp),
@@ -88,43 +95,39 @@ fun Registration(navController: NavHostController, userViewModel: UserViewModel)
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceAround
         ) {
-            LoginHeader()
-            LoginField(
+            RegHeader()
+            RegField(
+                userName,
                 userEmail,
                 password,
-                onUsernameChange = { userEmail = it },
-                onPasswordChange = { password = it },
-                onForgotPasswordClick = {
-                    // nav
-                }
+                onUserNameChange = { userName = it },
+                onUserEmailChange = { userEmail = it },
+                onPasswordChange = { password = it }
             )
 
-            LoginFooter(
-                onSignInClick = {
+            RegFooter(
+                onRegClick = {
                     scope.launch {
-                        if (userViewModel.checkUser(userEmail, password)) {
-                            navController.navigate(ScreensRoutes.Home.route)
-                        }
+                        val newUser = User(name = userName, email = userEmail, password = password)
+                        userViewModel.registerUser(newUser)
+                        navController.navigate(ScreensRoutes.Home.route)
                     }
                 },
-                onSignUpClick = {
-                    scope.launch { navController.navigate(ScreensRoutes.Home.route) }
-                }
             )
         }
     }
 }
 
 @Composable
-fun LoginHeader() {
+fun RegHeader() {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            text = stringResource(R.string.welcome),
+            text = stringResource(R.string.hi),
             fontSize = 36.sp,
             fontWeight = FontWeight.ExtraBold
         )
         Text(
-            text = stringResource(R.string.sigh_in_to_continue),
+            text = stringResource(R.string.register_to_continue),
             fontSize = 18.sp,
             fontWeight = FontWeight.SemiBold
         )
@@ -132,19 +135,31 @@ fun LoginHeader() {
 }
 
 @Composable
-fun LoginField(
+fun RegField(
+    userName: String,
     userEmail: String,
     password: String,
-    onUsernameChange: (String) -> Unit,
+    onUserNameChange: (String) -> Unit,
+    onUserEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
-    onForgotPasswordClick: () -> Unit
 ) {
     Column {
+
+        DemoField(
+            value = userName,
+            label = "UserName",
+            placeholder = "Enter your name",
+            onValueChange = onUserNameChange,
+            leadingIcon = {
+                Icon(Icons.Default.AccountBox, contentDescription = "name")
+            }
+        )
+        Spacer(modifier = Modifier.height(2.dp))
         DemoField(
             value = userEmail,
-            label = "Username",
+            label = "userEmail",
             placeholder = "Enter your email address",
-            onValueChange = onUsernameChange,
+            onValueChange = onUserEmailChange,
             leadingIcon = {
                 Icon(Icons.Default.Email, contentDescription = "email")
             }
@@ -160,32 +175,25 @@ fun LoginField(
                 Icon(Icons.Default.Lock, contentDescription = "pass")
             }
         )
-        TextButton(onClick = onForgotPasswordClick, modifier = Modifier.align(Alignment.End)) {
-            Text(text = "Forgot password")
-        }
     }
 }
 
 @Composable
-fun LoginFooter(
-    onSignInClick: () -> Unit,
-    onSignUpClick: () -> Unit,
+fun RegFooter(
+    onRegClick: () -> Unit,
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Button(
-            onClick = onSignInClick, modifier = Modifier.fillMaxWidth(),
+            onClick = onRegClick, modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Yellow500,
                 contentColor = Color.Red
             )
         ) {
-            Text(text = stringResource(R.string.sign_in))
-        }
-        TextButton(onClick = onSignUpClick) {
-            Text(text = stringResource(R.string.don_t_have_an_account_click_here))
+            Text(text = stringResource(R.string.register))
         }
         LaunchedEffect(Unit) {
-            onSignInClick()
+            onRegClick()
         }
     }
 }
