@@ -1,5 +1,6 @@
 package com.example.foodorder.ui.screens.reg
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +18,6 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Email
@@ -53,6 +53,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun RegistrationScreen(navController: NavHostController, userViewModel: UserViewModel) {
+    Log.d("Navigation", "Navigating to RegistrationScreen")
     Registration(navController = navController, userViewModel = userViewModel)
 }
 
@@ -191,9 +192,6 @@ fun RegFooter(
             )
         ) {
             Text(text = stringResource(R.string.register))
-        }
-        LaunchedEffect(Unit) {
-            onRegClick()
         }
     }
 }

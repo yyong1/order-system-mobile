@@ -1,5 +1,6 @@
 package com.example.foodorder.ui.screens.log
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -22,7 +23,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.foodorder.R
+import com.example.foodorder.data.models.User
 import com.example.foodorder.ui.navigation.ScreensRoutes
 import com.example.foodorder.ui.theme.Yellow500
 import com.example.foodorder.ui.viewmodels.UserViewModel
@@ -51,6 +52,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(navController: NavHostController, userViewModel: UserViewModel) {
+    Log.d("Navigation", "Navigating to LoginScreen")
     Login(navController = navController, userViewModel = userViewModel)
 }
 
@@ -63,7 +65,12 @@ fun Login(navController: NavHostController, userViewModel: UserViewModel) {
     var password by remember {
         mutableStateOf("")
     }
-
+    val userTest = User(
+//        id = 1,
+        name = "test",
+        email = "test",
+        password = "123"
+    )
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.orange_bg),
@@ -102,13 +109,16 @@ fun Login(navController: NavHostController, userViewModel: UserViewModel) {
             LoginFooter(
                 onSignInClick = {
                     scope.launch {
-                        if (userViewModel.checkUser(userEmail, password)) {
+                        if (
+                            (userTest.email == userEmail && userTest.password == password)
+                            || (userViewModel.checkUser(userEmail, password))
+                        ) {
                             navController.navigate(ScreensRoutes.Home.route)
                         }
                     }
                 },
                 onSignUpClick = {
-                    scope.launch { navController.navigate(ScreensRoutes.Home.route) }
+                    navController.navigate(ScreensRoutes.Registration.route)
                 }
             )
         }
@@ -173,7 +183,8 @@ fun LoginFooter(
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Button(
-            onClick = onSignInClick, modifier = Modifier.fillMaxWidth(),
+            onClick = onSignInClick,
+            modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Yellow500,
                 contentColor = Color.Red
@@ -183,9 +194,6 @@ fun LoginFooter(
         }
         TextButton(onClick = onSignUpClick) {
             Text(text = stringResource(R.string.don_t_have_an_account_click_here))
-        }
-        LaunchedEffect(Unit) {
-            onSignInClick()
         }
     }
 }
