@@ -36,7 +36,7 @@ fun Header() {
 
             // Should be dynamic rendering
 
-            Text(text = "California, US")
+            Text(text = "Sarajevo, BiH")
             Spacer(modifier = Modifier.width(8.dp))
             Icon(
                 painter = painterResource(id = R.drawable.arrow_down),

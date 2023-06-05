@@ -1,5 +1,6 @@
 package com.example.foodorder.ui.screens.homepage
 
+import android.os.Bundle
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,6 +34,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.foodorder.data.models.CategoryData
 import com.example.foodorder.data.models.PopularData
@@ -44,6 +46,7 @@ import com.example.foodorder.ui.theme.TextColor
 import com.example.foodorder.ui.theme.Typography
 import com.example.foodorder.ui.theme.Yellow500
 import com.example.foodorder.R
+import com.example.foodorder.ui.navigation.ScreensRoutes
 import com.example.foodorder.ui.screens.homepage.header.Header
 import com.example.foodorder.ui.screens.homepage.ordernow.OrderNowBox
 import com.example.foodorder.ui.theme.FoodOrderTheme
@@ -95,42 +98,42 @@ fun HomeScreen(navController: NavHostController) {
             Spacer(modifier = Modifier.height(20.dp))
 
             // TODO: put in the db
-//            PopularList(
-//                popularList = listOf(
-//                    PopularData(
-//                        R.drawable.salad_pesto_pizza,
-//                        title = "Salad Pesto Pizza",
-//                        description = "There are many variations of smth smth smth smth smth --- ...",
-//                        price = 10.55,
-//                        calories = 540.0,
-//                        scheduleTime = 20.0,
-//                        rate = 5.0,
-//                        ingredients = listOf(
-//                            R.drawable.ing1,
-//                            R.drawable.ing2,
-//                            R.drawable.ing3,
-//                            R.drawable.ing4,
-//                            R.drawable.ing5,
-//                        )
-//                    ),
-//                    PopularData(
-//                        R.drawable.primavera_pizza,
-//                        title = "Primavera Pizza",
-//                        description = "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.",
-//                        price = 12.55,
-//                        calories = 440.0,
-//                        scheduleTime = 30.0,
-//                        rate = 4.5,
-//                        ingredients = listOf(
-//                            R.drawable.ing1,
-//                            R.drawable.ing2,
-//                            R.drawable.ing3,
-//                            R.drawable.ing4,
-//                            R.drawable.ing5,
-//                        )
-//                    )
-//                )
-//            )
+            PopularList(
+                popularList = listOf(
+                    PopularData(
+                        R.drawable.salad_pesto_pizza,
+                        title = "Salad Pesto Pizza",
+                        description = "There are many variations of smth smth smth smth smth --- ...",
+                        price = 10.55,
+                        calories = 540.0,
+                        scheduleTime = 20.0,
+                        rate = 5.0,
+                        ingredients = listOf(
+                            R.drawable.ing1,
+                            R.drawable.ing2,
+                            R.drawable.ing3,
+                            R.drawable.ing4,
+                            R.drawable.ing5,
+                        )
+                    ),
+                    PopularData(
+                        R.drawable.primavera_pizza,
+                        title = "Primavera Pizza",
+                        description = "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.",
+                        price = 12.55,
+                        calories = 440.0,
+                        scheduleTime = 30.0,
+                        rate = 4.5,
+                        ingredients = listOf(
+                            R.drawable.ing1,
+                            R.drawable.ing2,
+                            R.drawable.ing3,
+                            R.drawable.ing4,
+                            R.drawable.ing5,
+                        )
+                    )
+                ), navController = navController
+            )
         }
     }
 }
@@ -142,12 +145,16 @@ fun BoxWithRes(
     bgColor: Color? = CardItemBg,
     iconColor: Color? = IconColor,
     boxSize: Int? = 40,
-    iconSize: Int = 24
+    iconSize: Int = 24,
+    navController: NavController? = null
 ) {
     Box(
         modifier = Modifier
             .size(boxSize!!.dp)
             .clip(RoundedCornerShape(10.dp))
+            .clickable {
+                navController?.popBackStack()
+            }
             .background(bgColor!!), contentAlignment = Alignment.Center
     ) {
         Icon(
@@ -181,6 +188,9 @@ fun CategoryItem(categoryData: CategoryData, selectedIndex: MutableState<Int>, i
         modifier = Modifier
             .size(width = 106.dp, height = 146.dp)
             .clip(RoundedCornerShape(16.dp))
+            .clickable {
+                selectedIndex.value = index
+            }
             .background(
                 if (selectedIndex.value == index) Yellow500 else CardItemBg
             )
@@ -205,19 +215,19 @@ fun CategoryItem(categoryData: CategoryData, selectedIndex: MutableState<Int>, i
 }
 
 @Composable
-fun PopularList(popularList: List<PopularData>, onItemClick: (PopularData) -> Unit) {
+fun PopularList(popularList: List<PopularData>, navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
     ) {
         for (item in popularList) {
-            PopularItem(popularData = item, onItemClick = onItemClick)
+            PopularItem(popularData = item, navController = navController)
         }
     }
 }
 
 @Composable
-fun PopularItem(popularData: PopularData, onItemClick: (PopularData) -> Unit) {
+fun PopularItem(popularData: PopularData, navController: NavController) {
 
     Column {
         Box(
@@ -232,13 +242,12 @@ fun PopularItem(popularData: PopularData, onItemClick: (PopularData) -> Unit) {
                     .height(176.dp)
                     .padding(end = 13.dp)
                     .clip(RoundedCornerShape(18.dp))
-//                    .clickable {
-//                        navController.currentBackStackEntry?.arguments = Bundle().apply {
-//                            putParcelable(Destinations.DetailArgs.foodData, popularData)
-//                        }
-//                        navController.navigate(Destinations.Detail)
-//                    }
-//                    .clickable { onItemClick(popularData) }
+                    .clickable {
+                        navController.currentBackStackEntry?.arguments = Bundle().apply {
+                            putParcelable(Destinations.DetailArgs.foodData, popularData)
+                        }
+                        navController.navigate(ScreensRoutes.Details.route)
+                    }
                     .background(
                         CardItemBg
                     )

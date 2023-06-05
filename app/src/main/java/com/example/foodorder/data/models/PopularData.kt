@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "popularData")
 data class PopularData(
 //    @DrawableRes
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     val resId: Int,
     val title: String,
     val price: Double,

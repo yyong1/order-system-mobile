@@ -16,7 +16,6 @@ val fonts = FontFamily(
         Font(R.font.poppins_regular, style = FontStyle.Normal),
         Font(R.font.poppins_medium, style = FontStyle.Normal, weight = FontWeight.Medium),
         Font(R.font.poppins_semibold, style = FontStyle.Normal, weight = FontWeight.SemiBold),
-
         )
 )
 
