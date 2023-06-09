@@ -1,6 +1,5 @@
 package com.example.foodorder.ui.screens.homepage
 
-import android.os.Bundle
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,18 +19,20 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -46,15 +47,55 @@ import com.example.foodorder.ui.theme.TextColor
 import com.example.foodorder.ui.theme.Typography
 import com.example.foodorder.ui.theme.Yellow500
 import com.example.foodorder.R
-import com.example.foodorder.ui.navigation.ScreensRoutes
+import com.example.foodorder.ui.viewmodels.PopularDataViewModel
 import com.example.foodorder.ui.screens.homepage.header.Header
 import com.example.foodorder.ui.screens.homepage.ordernow.OrderNowBox
-import com.example.foodorder.ui.theme.FoodOrderTheme
+import kotlinx.coroutines.launch
 
 @Composable
-fun HomeScreen(navController: NavHostController) {
+fun HomeScreen(
+    navController: NavHostController,
+    popularDataViewModel: PopularDataViewModel,
+    onPopularDataClick: (PopularData) -> Unit
+) {
 
     val scrollState = rememberScrollState()
+
+    val popList = listOf(
+        PopularData(
+            resId = R.drawable.salad_pesto_pizza,
+            title = "Salad Pesto Pizza",
+            description = "There are many variations of smth smth smth smth smth --- ...",
+            price = 10.55,
+            calories = 540.0,
+            scheduleTime = 20.0,
+            rate = 5.0,
+            ingredients = listOf(
+                R.drawable.ing1,
+                R.drawable.ing2,
+                R.drawable.ing3,
+                R.drawable.ing4,
+                R.drawable.ing5,
+            )
+        ),
+        PopularData(
+            resId = R.drawable.primavera_pizza,
+            title = "Primavera Pizza",
+            description = "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.",
+            price = 12.55,
+            calories = 440.0,
+            scheduleTime = 30.0,
+            rate = 4.5,
+            ingredients = listOf(
+                R.drawable.ing1,
+                R.drawable.ing2,
+                R.drawable.ing3,
+                R.drawable.ing4,
+                R.drawable.ing5,
+            )
+        )
+    )
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -99,43 +140,36 @@ fun HomeScreen(navController: NavHostController) {
 
             // TODO: put in the db
             PopularList(
-                popularList = listOf(
-                    PopularData(
-                        R.drawable.salad_pesto_pizza,
-                        title = "Salad Pesto Pizza",
-                        description = "There are many variations of smth smth smth smth smth --- ...",
-                        price = 10.55,
-                        calories = 540.0,
-                        scheduleTime = 20.0,
-                        rate = 5.0,
-                        ingredients = listOf(
-                            R.drawable.ing1,
-                            R.drawable.ing2,
-                            R.drawable.ing3,
-                            R.drawable.ing4,
-                            R.drawable.ing5,
-                        )
-                    ),
-                    PopularData(
-                        R.drawable.primavera_pizza,
-                        title = "Primavera Pizza",
-                        description = "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.",
-                        price = 12.55,
-                        calories = 440.0,
-                        scheduleTime = 30.0,
-                        rate = 4.5,
-                        ingredients = listOf(
-                            R.drawable.ing1,
-                            R.drawable.ing2,
-                            R.drawable.ing3,
-                            R.drawable.ing4,
-                            R.drawable.ing5,
-                        )
-                    )
-                ), navController = navController
+                popularList = popList,
+                navController = navController,
+                onPopularDataClick = onPopularDataClick
             )
         }
     }
+    val scope = rememberCoroutineScope()
+
+    DisposableEffect(Unit) {
+        val job = scope.launch {
+            val convertedList = popList.map { popularData ->
+                PopularData(
+                    resId = popularData.resId,
+                    title = popularData.title,
+                    price = popularData.price,
+                    rate = popularData.rate,
+                    description = popularData.description,
+                    calories = popularData.calories,
+                    scheduleTime = popularData.scheduleTime,
+                    ingredients = popularData.ingredients
+                )
+            }
+            popularDataViewModel.savePopularData(convertedList)
+        }
+
+        onDispose {
+            job.cancel()
+        }
+    }
+
 }
 
 @Composable
@@ -215,20 +249,31 @@ fun CategoryItem(categoryData: CategoryData, selectedIndex: MutableState<Int>, i
 }
 
 @Composable
-fun PopularList(popularList: List<PopularData>, navController: NavController) {
+fun PopularList(
+    popularList: List<PopularData>,
+    navController: NavController,
+    onPopularDataClick: (PopularData) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
     ) {
         for (item in popularList) {
-            PopularItem(popularData = item, navController = navController)
+            PopularItem(
+                popularData = item,
+                navController = navController,
+                onPopularDataClick = onPopularDataClick
+            )
         }
     }
 }
 
 @Composable
-fun PopularItem(popularData: PopularData, navController: NavController) {
-
+fun PopularItem(
+    popularData: PopularData,
+    navController: NavController,
+    onPopularDataClick: (PopularData) -> Unit
+) {
     Column {
         Box(
             modifier = Modifier
@@ -243,10 +288,7 @@ fun PopularItem(popularData: PopularData, navController: NavController) {
                     .padding(end = 13.dp)
                     .clip(RoundedCornerShape(18.dp))
                     .clickable {
-                        navController.currentBackStackEntry?.arguments = Bundle().apply {
-                            putParcelable(Destinations.DetailArgs.foodData, popularData)
-                        }
-                        navController.navigate(ScreensRoutes.Details.route)
+                        onPopularDataClick(popularData)
                     }
                     .background(
                         CardItemBg
@@ -262,7 +304,7 @@ fun PopularItem(popularData: PopularData, navController: NavController) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Image(
                             painter = painterResource(id = R.drawable.crown),
-                            contentDescription = "Crown",
+                            contentDescription = stringResource(R.string.crown),
                             modifier = Modifier.size(24.dp)
                         )
                         Spacer(modifier = Modifier.width(11.dp))
@@ -371,12 +413,17 @@ fun PopularItem(popularData: PopularData, navController: NavController) {
     }
 }
 
-@Composable
-@Preview
-fun PreviewHomeScreen() {
-    FoodOrderTheme {
-        Surface {
-//            HomeScreen()
-        }
-    }
-}
+//@Composable
+//@Preview
+//fun PreviewHomeScreen() {
+//    FoodOrderTheme {
+//        Surface {
+//            // Call the HomeScreen composable with mock data or provide the necessary parameters
+//            HomeScreen(
+//                navController = rememberNavController(),
+//                popularDataViewModel = PopularDataViewModel(),
+//                onPopularDataClick = {}
+//            )
+//        }
+//    }
+//}

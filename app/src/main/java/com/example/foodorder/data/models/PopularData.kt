@@ -3,6 +3,9 @@ package com.example.foodorder.data.models
 import androidx.annotation.DrawableRes
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.example.foodorder.data.DrawableListConverter
+
 @Entity(tableName = "popularData")
 data class PopularData(
 //    @DrawableRes
@@ -14,5 +17,6 @@ data class PopularData(
     val description: String,
     val calories: Double,
     val scheduleTime: Double,
+    @TypeConverters(DrawableListConverter::class)
     val ingredients: List<Int>
 )

@@ -26,9 +26,18 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.foodorder.ui.theme.BlackTextColor
 import com.example.foodorder.ui.theme.CardItemBg
 import com.example.foodorder.ui.theme.Orange500
@@ -36,19 +45,21 @@ import com.example.foodorder.ui.theme.TextColor
 import com.example.foodorder.ui.theme.Typography
 import com.example.foodorder.ui.theme.Yellow500
 import com.example.foodorder.R
+import com.example.foodorder.data.models.PopularData
+import com.example.foodorder.ui.viewmodels.PopularDataViewModel
 
 @Composable
-fun DetailsScreen(navController: NavController) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .padding(start = 30.dp, top = 48.dp, end = 30.dp)
-    )
-    {
+fun DetailsScreen(navController: NavController, popularDataTitle: String) {
+    val popularDataViewModel: PopularDataViewModel = viewModel()
 
-        val data = navController.previousBackStackEntry?.arguments?.getParcelable<PopularData>(Destinations.DetailArgs.foodData)
+    var popList by remember { mutableStateOf<List<PopularData>>(emptyList()) }
 
+    LaunchedEffect(Unit) {
+        val data = popularDataViewModel.getAllPopularData()
+        popList = data
+    }
+
+    val data = popList.find { it.title == popularDataTitle }
         if (data != null) {
 
             Column(
@@ -178,7 +189,7 @@ fun DetailsScreen(navController: NavController) {
                     verticalAlignment = Alignment.CenterVertically
                 )
                 {
-                    items(data.ingradients.size) { index ->
+                    items(data.ingredients.size) { index ->
                         Box(
                             modifier = Modifier
                                 .size(56.dp)
@@ -189,7 +200,7 @@ fun DetailsScreen(navController: NavController) {
                         )
                         {
                             Image(
-                                painter = painterResource(id = data.ingradients[index]),
+                                painter = painterResource(id = data.ingredients[index]),
                                 contentDescription = "",
                                 modifier = Modifier.size(width = 30.dp, height = 24.dp)
                             )
@@ -215,4 +226,11 @@ fun DetailsScreen(navController: NavController) {
 
         }
     }
+
+@Preview
+@Composable
+fun PreviewDetailsScreen() {
+    val navController = rememberNavController()
+    val popularDataTitle = "Salad Pesto Pizza"
+    DetailsScreen(navController = navController, popularDataTitle = popularDataTitle)
 }

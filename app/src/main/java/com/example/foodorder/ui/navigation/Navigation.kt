@@ -8,15 +8,26 @@ import com.example.foodorder.ui.screens.details.DetailsScreen
 import com.example.foodorder.ui.screens.homepage.*
 import com.example.foodorder.ui.screens.log.LoginScreen
 import com.example.foodorder.ui.screens.reg.RegistrationScreen
+import com.example.foodorder.ui.viewmodels.PopularDataViewModel
 import com.example.foodorder.ui.viewmodels.UserViewModel
 
 @Composable
-fun Navigation(navController: NavHostController, userViewModel: UserViewModel) {
+fun Navigation(
+    navController: NavHostController,
+    userViewModel: UserViewModel,
+    popularDataViewModel: PopularDataViewModel
+) {
 
     NavHost(navController = navController, startDestination = ScreensRoutes.Login.route) {
         composable(ScreensRoutes.Home.route) {
             HomeScreen(
-                navController
+                navController = navController,
+                popularDataViewModel = popularDataViewModel,
+                onPopularDataClick = { popularData ->
+                    navController.navigate(
+                        "${ScreensRoutes.Details.route}/${popularData.title}"
+                    )
+                }
             )
         }
         composable(ScreensRoutes.Login.route) {
@@ -31,8 +42,9 @@ fun Navigation(navController: NavHostController, userViewModel: UserViewModel) {
                 userViewModel = userViewModel
             )
         }
-        composable(ScreensRoutes.Details.route) {
-            DetailsScreen(navController = navController)
+        composable(ScreensRoutes.Details.route) { backStackEntry ->
+            val title = backStackEntry.arguments?.getString("title")
+            DetailsScreen(navController = navController, popularDataTitle = title ?: "")
         }
     }
 }

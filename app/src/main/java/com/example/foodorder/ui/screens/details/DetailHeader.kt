@@ -34,7 +34,7 @@ fun DetailHeader(navController: NavController) {
     ) {
 
         BoxWithRes(
-            resId = R.drawable.arrow_left1,
+            resId = R.drawable.arrow_left,
             description = "Left",
             navController = navController
         )
