@@ -6,8 +6,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.foodorder.ui.screens.details.DetailsScreen
 import com.example.foodorder.ui.screens.homepage.*
-import com.example.foodorder.ui.screens.log.LoginScreen
-import com.example.foodorder.ui.screens.reg.RegistrationScreen
+import com.example.foodorder.ui.screens.login.LoginScreen
+import com.example.foodorder.ui.screens.register.RegistrationScreen
 import com.example.foodorder.ui.viewmodels.PopularDataViewModel
 import com.example.foodorder.ui.viewmodels.UserViewModel
 
