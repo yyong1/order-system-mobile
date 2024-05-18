@@ -2,13 +2,24 @@ package com.example.foodorder.ui.screens.map
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.util.Log
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -22,6 +33,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
+import kotlinx.coroutines.launch
 
 data class Restaurant(
     val name: String,
@@ -30,11 +42,12 @@ data class Restaurant(
 )
 
 val restaurantList = listOf(
-    Restaurant("Restaurant 1", LatLng(43.855, 18.415), "TEST1"),
-    Restaurant("Restaurant 2", LatLng(43.854, 18.414), "TEST2"),
-    Restaurant("Restaurant 3", LatLng(43.853, 18.413), "TEST3")
+    Restaurant("Restaurant 1", LatLng(43.855, 18.415), "Description of Restaurant 1"),
+    Restaurant("Restaurant 2", LatLng(43.854, 18.414), "Description of Restaurant 2"),
+    Restaurant("Restaurant 3", LatLng(43.853, 18.413), "Description of Restaurant 3")
 )
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MapScreen(navController: NavHostController) {
     val cameraPositionState = rememberCameraPositionState {
@@ -44,35 +57,61 @@ fun MapScreen(navController: NavHostController) {
             .build()
     }
     val context = LocalContext.current
-    GoogleMap(
-        cameraPositionState = cameraPositionState,
+    val coroutineScope = rememberCoroutineScope()
+    val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    var selectedRestaurant by remember { mutableStateOf<Restaurant?>(null) }
+
+    ModalBottomSheetLayout(
+        sheetState = bottomSheetState,
+        sheetContent = {
+            selectedRestaurant?.let { restaurant ->
+                RestaurantInfoSheet(restaurant)
+            }
+        }
     ) {
-        restaurantList.forEach { restaurant ->
-            Marker(
-                position = restaurant.location,
-                title = restaurant.name,
-                snippet = "Marker for ${restaurant.name}",
-                icon = BitmapDescriptorFactory.fromBitmap(
-                    Bitmap.createScaledBitmap(
-                        BitmapFactory.decodeResource(
-                            context.resources,
-                            R.drawable.location
-                        ), 150, 150, false
-                    )
-                ),
-                onClick = { marker ->
-                    val rest = restaurantList.filter { res -> res.name == marker.title }[0]
-                    Log.d("Restraunt", rest.description)
-                    true
-                }
-            )
+        GoogleMap(
+            cameraPositionState = cameraPositionState,
+        ) {
+            restaurantList.forEach { restaurant ->
+                Marker(
+                    position = restaurant.location,
+                    title = restaurant.name,
+                    snippet = "Marker for ${restaurant.name}",
+                    icon = BitmapDescriptorFactory.fromBitmap(
+                        Bitmap.createScaledBitmap(
+                            BitmapFactory.decodeResource(
+                                context.resources,
+                                R.drawable.location
+                            ), 150, 150, false
+                        )
+                    ),
+                    onClick = { marker ->
+                        selectedRestaurant = restaurantList.firstOrNull { it.name == marker.title }
+                        if (selectedRestaurant != null) {
+                            coroutineScope.launch {
+                                bottomSheetState.show()
+                            }
+                        }
+                        true
+                    }
+                )
+            }
+        }
+        FloatingActionButton(
+            onClick = { navController.navigate(ScreensRoutes.Home.route) },
+            modifier = Modifier.padding(10.dp),
+            backgroundColor = Color.Yellow
+        ) {
+            Icon(Icons.Filled.ArrowBack, contentDescription = "Back Button")
         }
     }
-    FloatingActionButton(
-        onClick = { navController.navigate(ScreensRoutes.Home.route) },
-        modifier = Modifier.padding(10.dp),
-        backgroundColor = Color.Yellow
-    ) {
-        Icon(Icons.Filled.ArrowBack, contentDescription = "Back Button")
+}
+
+@Composable
+fun RestaurantInfoSheet(restaurant: Restaurant) {
+    Column(modifier = Modifier.padding(16.dp)) {
+        Text(text = restaurant.name, style = MaterialTheme.typography.h6)
+        Text(text = restaurant.description, style = MaterialTheme.typography.body1)
+        // Add more details and styling as needed
     }
 }
