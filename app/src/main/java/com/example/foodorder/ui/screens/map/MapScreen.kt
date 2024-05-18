@@ -3,9 +3,19 @@ package com.example.foodorder.ui.screens.map
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.foodorder.R
+import com.example.foodorder.ui.navigation.ScreensRoutes
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -26,7 +36,7 @@ val restaurantList = listOf(
 )
 
 @Composable
-fun MapScreen() {
+fun MapScreen(navController: NavHostController) {
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.Builder()
             .target(restaurantList.firstOrNull()?.location ?: LatLng(0.0, 0.0))
@@ -42,13 +52,27 @@ fun MapScreen() {
                 position = restaurant.location,
                 title = restaurant.name,
                 snippet = "Marker for ${restaurant.name}",
-                icon = BitmapDescriptorFactory.fromBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.resources, R.drawable.location), 150, 150, false)),
-                onClick = {marker ->
+                icon = BitmapDescriptorFactory.fromBitmap(
+                    Bitmap.createScaledBitmap(
+                        BitmapFactory.decodeResource(
+                            context.resources,
+                            R.drawable.location
+                        ), 150, 150, false
+                    )
+                ),
+                onClick = { marker ->
                     val rest = restaurantList.filter { res -> res.name == marker.title }[0]
                     Log.d("Restraunt", rest.description)
                     true
                 }
             )
         }
+    }
+    FloatingActionButton(
+        onClick = { navController.navigate(ScreensRoutes.Home.route) },
+        modifier = Modifier.padding(10.dp),
+        backgroundColor = Color.Yellow
+    ) {
+        Icon(Icons.Filled.ArrowBack, contentDescription = "Back Button")
     }
 }

@@ -47,7 +47,7 @@ fun Navigation(
             DetailsScreen(navController = navController, popularDataTitle = title ?: "")
         }
         composable(ScreensRoutes.Map.route) {
-            MapScreen()
+            MapScreen(navController = navController)
         }
     }
 }
