@@ -22,7 +22,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -102,7 +101,7 @@ fun HomeScreen(
             .padding(start = 30.dp, top = 48.dp, end = 17.dp)
     ) {
         Column(modifier = Modifier.verticalScroll(state = scrollState)) {
-            Header()
+            Header(navController)
 
             Spacer(modifier = Modifier.height(32.dp))
 
@@ -180,10 +179,11 @@ fun BoxWithRes(
     iconColor: Color? = IconColor,
     boxSize: Int? = 40,
     iconSize: Int = 24,
-    navController: NavController? = null
+    navController: NavController? = null,
+    modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .size(boxSize!!.dp)
             .clip(RoundedCornerShape(10.dp))
             .clickable {
@@ -194,7 +194,7 @@ fun BoxWithRes(
         Icon(
             painter = painterResource(id = resId),
             contentDescription = description,
-            modifier = Modifier.size(iconSize.dp),
+            modifier = modifier.size(iconSize.dp),
             tint = iconColor!!
         )
     }

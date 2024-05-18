@@ -5,8 +5,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.foodorder.ui.screens.details.DetailsScreen
-import com.example.foodorder.ui.screens.homepage.*
+import com.example.foodorder.ui.screens.homepage.HomeScreen
 import com.example.foodorder.ui.screens.log.LoginScreen
+import com.example.foodorder.ui.screens.map.MapScreen
 import com.example.foodorder.ui.screens.reg.RegistrationScreen
 import com.example.foodorder.ui.viewmodels.PopularDataViewModel
 import com.example.foodorder.ui.viewmodels.UserViewModel
@@ -17,7 +18,6 @@ fun Navigation(
     userViewModel: UserViewModel,
     popularDataViewModel: PopularDataViewModel
 ) {
-
     NavHost(navController = navController, startDestination = ScreensRoutes.Login.route) {
         composable(ScreensRoutes.Home.route) {
             HomeScreen(
@@ -46,7 +46,8 @@ fun Navigation(
             val title = backStackEntry.arguments?.getString("title")
             DetailsScreen(navController = navController, popularDataTitle = title ?: "")
         }
+        composable(ScreensRoutes.Map.route) {
+            MapScreen()
+        }
     }
 }
-
-

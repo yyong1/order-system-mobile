@@ -1,5 +1,6 @@
 package com.example.foodorder.ui.screens.homepage.header
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,18 +14,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.foodorder.R
+import com.example.foodorder.ui.navigation.ScreensRoutes
 import com.example.foodorder.ui.screens.homepage.BoxWithRes
 import com.example.foodorder.ui.theme.Orange500
 
 @Composable
-fun Header() {
+fun Header(navController: NavHostController) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxWidth()
     ) {
-        BoxWithRes(resId = R.drawable.menu, description = "Menu")
+        BoxWithRes(
+            resId = R.drawable.menu,
+            description = "Map",
+            modifier = Modifier.clickable { navController.navigate(ScreensRoutes.Map.route) }
+        )
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
                 painter = painterResource(id = R.drawable.location),
@@ -35,7 +42,6 @@ fun Header() {
             Spacer(modifier = Modifier.width(8.dp))
 
             // Should be dynamic rendering
-
             Text(text = "Sarajevo, BiH")
             Spacer(modifier = Modifier.width(8.dp))
             Icon(

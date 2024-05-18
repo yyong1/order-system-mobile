@@ -8,7 +8,6 @@ import com.example.foodorder.data.DrawableListConverter
 
 @Entity(tableName = "popularData")
 data class PopularData(
-//    @DrawableRes
     @PrimaryKey(autoGenerate = true)
     val resId: Int,
     val title: String,

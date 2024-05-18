@@ -6,7 +6,6 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "categoryData")
 data class CategoryData(
-//    @DrawableRes
     @PrimaryKey
     val redId: Int,
     val title: String
