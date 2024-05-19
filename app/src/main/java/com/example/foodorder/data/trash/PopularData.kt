@@ -1,10 +1,9 @@
-package com.example.foodorder.data.models
+package com.example.foodorder.data.trash
 
-import androidx.annotation.DrawableRes
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.example.foodorder.data.DrawableListConverter
+import com.example.foodorder.data.utils.DrawableListConverter
 
 @Entity(tableName = "popularData")
 data class PopularData(

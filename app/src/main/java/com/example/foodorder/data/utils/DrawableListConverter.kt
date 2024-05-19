@@ -1,4 +1,4 @@
-package com.example.foodorder.data
+package com.example.foodorder.data.utils
 
 import androidx.room.TypeConverter
 

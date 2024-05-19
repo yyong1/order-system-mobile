@@ -9,20 +9,25 @@ import com.example.foodorder.ui.screens.homepage.HomeScreen
 import com.example.foodorder.ui.screens.log.LoginScreen
 import com.example.foodorder.ui.screens.map.MapScreen
 import com.example.foodorder.ui.screens.reg.RegistrationScreen
-import com.example.foodorder.ui.viewmodels.PopularDataViewModel
-import com.example.foodorder.ui.viewmodels.UserViewModel
+import com.example.foodorder.data.trash.PopularDataViewModel
+import com.example.foodorder.data.viewmodels.UserViewModel
+import com.example.foodorder.data.viewmodels.CategoryViewModel
+import com.example.foodorder.data.viewmodels.OrderViewModel
 
 @Composable
 fun Navigation(
     navController: NavHostController,
     userViewModel: UserViewModel,
-    popularDataViewModel: PopularDataViewModel
+    popularDataViewModel: PopularDataViewModel,
+    categoryViewModel: CategoryViewModel,
+    orderViewModel: OrderViewModel
 ) {
     NavHost(navController = navController, startDestination = ScreensRoutes.Login.route) {
         composable(ScreensRoutes.Home.route) {
             HomeScreen(
                 navController = navController,
                 popularDataViewModel = popularDataViewModel,
+                categoryViewModel = categoryViewModel, // Pass CategoryViewModel
                 onPopularDataClick = { popularData ->
                     navController.navigate(
                         "${ScreensRoutes.Details.route}/${popularData.title}"

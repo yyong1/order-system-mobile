@@ -23,6 +23,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -36,8 +37,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import com.example.foodorder.data.models.CategoryData
-import com.example.foodorder.data.models.PopularData
+import com.example.foodorder.data.models.Category
+import com.example.foodorder.data.trash.PopularData
 import com.example.foodorder.ui.theme.BlackTextColor
 import com.example.foodorder.ui.theme.CardItemBg
 import com.example.foodorder.ui.theme.IconColor
@@ -46,7 +47,8 @@ import com.example.foodorder.ui.theme.TextColor
 import com.example.foodorder.ui.theme.Typography
 import com.example.foodorder.ui.theme.Yellow500
 import com.example.foodorder.R
-import com.example.foodorder.ui.viewmodels.PopularDataViewModel
+import com.example.foodorder.data.trash.PopularDataViewModel
+import com.example.foodorder.data.viewmodels.CategoryViewModel
 import com.example.foodorder.ui.screens.homepage.header.Header
 import com.example.foodorder.ui.screens.homepage.ordernow.OrderNowBox
 import kotlinx.coroutines.launch
@@ -55,11 +57,10 @@ import kotlinx.coroutines.launch
 fun HomeScreen(
     navController: NavHostController,
     popularDataViewModel: PopularDataViewModel,
+    categoryViewModel: CategoryViewModel,
     onPopularDataClick: (PopularData) -> Unit
 ) {
-
     val scrollState = rememberScrollState()
-
     val popList = listOf(
         PopularData(
             resId = R.drawable.salad_pesto_pizza,
@@ -95,6 +96,8 @@ fun HomeScreen(
         )
     )
 
+    val categoryList = categoryViewModel.allCategories.collectAsState().value
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -119,17 +122,13 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(20.dp))
 
             CategoryList(
-                categories = listOf(
-                    CategoryData(redId = R.drawable.pizza, title = "Pizza"),
-                    CategoryData(redId = R.drawable.hamburger, title = "Burger"),
-                    CategoryData(redId = R.drawable.drinks, title = "Drinks"),
-                )
+                categories = categoryList
             )
 
             Spacer(modifier = Modifier.height(20.dp))
 
             Text(
-                text = "Categories",
+                text = "Popular Items",
                 style = Typography.body1,
                 fontSize = 22.sp,
                 color = BlackTextColor
@@ -137,7 +136,6 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // TODO: put in the db
             PopularList(
                 popularList = popList,
                 navController = navController,
@@ -168,7 +166,6 @@ fun HomeScreen(
             job.cancel()
         }
     }
-
 }
 
 @Composable
@@ -201,23 +198,20 @@ fun BoxWithRes(
 }
 
 @Composable
-fun CategoryList(categories: List<CategoryData>) {
-
-    val selectedIndex = remember {
-        mutableStateOf(0)
-    }
+fun CategoryList(categories: List<Category>) {
+    val selectedIndex = remember { mutableStateOf(0) }
 
     LazyRow(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
         items(categories.size) { index ->
             CategoryItem(
-                categoryData = categories[index], selectedIndex = selectedIndex, index = index
+                category = categories[index], selectedIndex = selectedIndex, index = index
             )
         }
     }
 }
 
 @Composable
-fun CategoryItem(categoryData: CategoryData, selectedIndex: MutableState<Int>, index: Int) {
+fun CategoryItem(category: Category, selectedIndex: MutableState<Int>, index: Int) {
     Box(
         modifier = Modifier
             .size(width = 106.dp, height = 146.dp)
@@ -232,14 +226,14 @@ fun CategoryItem(categoryData: CategoryData, selectedIndex: MutableState<Int>, i
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Icon(
-                painter = painterResource(id = categoryData.redId),
-                contentDescription = categoryData.title,
+                painter = painterResource(id = category.iconResId),
+                contentDescription = category.name,
                 modifier = Modifier.size(48.dp),
                 tint = if (selectedIndex.value == index) Color.White else BlackTextColor
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = categoryData.title,
+                text = category.name,
                 style = Typography.body2,
                 fontSize = 18.sp,
                 color = if (selectedIndex.value == index) Color.White else BlackTextColor
@@ -255,8 +249,7 @@ fun PopularList(
     onPopularDataClick: (PopularData) -> Unit
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = Modifier.fillMaxWidth()
     ) {
         for (item in popularList) {
             PopularItem(
@@ -279,8 +272,7 @@ fun PopularItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(176.dp)
-        )
-        {
+        ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -290,140 +282,108 @@ fun PopularItem(
                     .clickable {
                         onPopularDataClick(popularData)
                     }
-                    .background(
-                        CardItemBg
-                    )
-            )
-
-            Column(
-                modifier = Modifier
-                    .padding(start = 20.dp, top = 20.dp)
+                    .background(CardItemBg)
             ) {
-                Box(modifier = Modifier.height(40.dp), contentAlignment = Alignment.Center)
-                {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Image(
-                            painter = painterResource(id = R.drawable.crown),
-                            contentDescription = stringResource(R.string.crown),
-                            modifier = Modifier.size(24.dp)
-                        )
-                        Spacer(modifier = Modifier.width(11.dp))
+                Column(
+                    modifier = Modifier.padding(start = 20.dp, top = 20.dp)
+                ) {
+                    Box(modifier = Modifier.height(40.dp), contentAlignment = Alignment.Center) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Image(
+                                painter = painterResource(id = R.drawable.crown),
+                                contentDescription = stringResource(R.string.crown),
+                                modifier = Modifier.size(24.dp)
+                            )
+                            Spacer(modifier = Modifier.width(11.dp))
 
-                        Text(
-                            text = "Best Selling",
-                            style = Typography.h5,
-                            fontSize = 14.sp,
-                            color = TextColor
-                        )
+                            Text(
+                                text = "Best Selling",
+                                style = Typography.h5,
+                                fontSize = 14.sp,
+                                color = TextColor
+                            )
+                        }
                     }
-                }
 
-                Box(modifier = Modifier.height(40.dp), contentAlignment = Alignment.Center)
-                {
-                    Text(
-                        text = popularData.title,
-                        style = Typography.body1,
-                        fontSize = 18.sp,
-                        color = BlackTextColor
-                    )
-                }
-
-                Box(modifier = Modifier.height(40.dp), contentAlignment = Alignment.Center)
-                {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                    Box(modifier = Modifier.height(40.dp), contentAlignment = Alignment.Center) {
                         Text(
-                            text = "$",
+                            text = popularData.title,
                             style = Typography.body1,
-                            fontSize = 14.sp,
-                            color = Orange500
-                        )
-
-                        Text(
-                            text = "${popularData.price}",
-                            style = Typography.body1,
-                            fontSize = 20.sp,
+                            fontSize = 18.sp,
                             color = BlackTextColor
                         )
                     }
-                }
-            }
 
+                    Box(modifier = Modifier.height(40.dp), contentAlignment = Alignment.Center) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = "$",
+                                style = Typography.body1,
+                                fontSize = 14.sp,
+                                color = Orange500
+                            )
 
-            Box(
-                modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomStart),
-            )
-            {
-
-                Row(verticalAlignment = Alignment.CenterVertically) {
-
-                    Box(
-                        modifier = Modifier
-                            .size(width = 60.dp, height = 40.dp)
-                            .clip(RoundedCornerShape(bottomStart = 18.dp, topEnd = 18.dp))
-                            .background(Yellow500),
-                        contentAlignment = Alignment.Center
-                    )
-                    {
-                        Icon(
-                            painter = painterResource(id = R.drawable.add),
-                            contentDescription = "Add",
-                            modifier = Modifier.size(24.dp),
-                            tint = Color.White
-                        )
+                            Text(
+                                text = "${popularData.price}",
+                                style = Typography.body1,
+                                fontSize = 20.sp,
+                                color = BlackTextColor
+                            )
+                        }
                     }
+                }
 
-                    Spacer(modifier = Modifier.width(48.dp))
-
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.BottomStart),
+                ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.star),
-                            contentDescription = "Star",
-                            modifier = Modifier.size(16.dp),
-                            tint = BlackTextColor
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
+                        Box(
+                            modifier = Modifier
+                                .size(width = 60.dp, height = 40.dp)
+                                .clip(RoundedCornerShape(bottomStart = 18.dp, topEnd = 18.dp))
+                                .background(Yellow500),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.add),
+                                contentDescription = "Add",
+                                modifier = Modifier.size(24.dp),
+                                tint = Color.White
+                            )
+                        }
 
-                        Text(
-                            text = "${popularData.rate}",
-                            style = Typography.body1,
-                            color = BlackTextColor
-                        )
+                        Spacer(modifier = Modifier.width(48.dp))
+
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.star),
+                                contentDescription = "Star",
+                                modifier = Modifier.size(16.dp),
+                                tint = BlackTextColor
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            Text(
+                                text = "${popularData.rate}",
+                                style = Typography.body1,
+                                color = BlackTextColor
+                            )
+                        }
                     }
                 }
+
+                Image(
+                    painter = painterResource(id = popularData.resId),
+                    contentDescription = popularData.title,
+                    modifier = Modifier
+                        .size(156.dp)
+                        .align(Alignment.CenterEnd)
+                )
             }
-
-
-            Image(
-                painter = painterResource(id = popularData.resId),
-                contentDescription = popularData.title,
-                modifier = Modifier
-                    .size(156.dp)
-                    .align(
-                        Alignment.CenterEnd
-                    )
-            )
-
-
         }
 
         Spacer(modifier = Modifier.height(20.dp))
     }
 }
-
-//@Composable
-//@Preview
-//fun PreviewHomeScreen() {
-//    FoodOrderTheme {
-//        Surface {
-//            // Call the HomeScreen composable with mock data or provide the necessary parameters
-//            HomeScreen(
-//                navController = rememberNavController(),
-//                popularDataViewModel = PopularDataViewModel(),
-//                onPopularDataClick = {}
-//            )
-//        }
-//    }
-//}

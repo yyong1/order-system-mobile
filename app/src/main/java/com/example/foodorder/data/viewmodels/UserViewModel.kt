@@ -1,7 +1,7 @@
-package com.example.foodorder.ui.viewmodels
+package com.example.foodorder.data.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.example.foodorder.data.database.UserRepository
+import com.example.foodorder.data.repository.UserRepository
 import com.example.foodorder.data.models.User
 
 class UserViewModel(private val userRepository: UserRepository) : ViewModel() {

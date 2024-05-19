@@ -1,8 +1,8 @@
-package com.example.foodorder.ui.viewmodels
+package com.example.foodorder.data.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.foodorder.data.database.UserRepository
+import com.example.foodorder.data.repository.UserRepository
 
 class UserViewModelFactory(private val userRepository: UserRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

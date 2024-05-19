@@ -1,9 +1,8 @@
-package com.example.foodorder.ui.viewmodels
+package com.example.foodorder.data.trash
 
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.foodorder.data.database.PopularDataRepository
 
 class PopularDataViewModelFactory(private val popularDataRepository: PopularDataRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

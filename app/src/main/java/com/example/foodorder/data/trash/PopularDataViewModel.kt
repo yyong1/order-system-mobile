@@ -1,9 +1,8 @@
-package com.example.foodorder.ui.viewmodels
+package com.example.foodorder.data.trash
 
 import androidx.lifecycle.ViewModel
-import com.example.foodorder.data.database.PopularDataRepository
-import com.example.foodorder.data.models.PopularData
-import com.example.foodorder.data.models.User
+import com.example.foodorder.data.trash.PopularDataRepository
+import com.example.foodorder.data.trash.PopularData
 
 class PopularDataViewModel(private val popularDataRepository: PopularDataRepository) : ViewModel() {
 
@@ -14,3 +13,4 @@ class PopularDataViewModel(private val popularDataRepository: PopularDataReposit
         return popularDataRepository.getAllPopularData()
     }
 }
+// TODO LiveData or StateFlow in the ViewModel

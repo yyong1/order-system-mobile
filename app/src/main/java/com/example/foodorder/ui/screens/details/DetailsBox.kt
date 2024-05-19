@@ -22,7 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.foodorder.R
-import com.example.foodorder.data.models.PopularData
+import com.example.foodorder.data.trash.PopularData
 import com.example.foodorder.ui.theme.BlackTextColor
 import com.example.foodorder.ui.theme.CardItemBg
 import com.example.foodorder.ui.theme.DividerColor

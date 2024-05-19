@@ -47,7 +47,7 @@ import com.example.foodorder.R
 import com.example.foodorder.data.models.User
 import com.example.foodorder.ui.navigation.ScreensRoutes
 import com.example.foodorder.ui.theme.Yellow500
-import com.example.foodorder.ui.viewmodels.UserViewModel
+import com.example.foodorder.data.viewmodels.UserViewModel
 import kotlinx.coroutines.launch
 
 @Composable

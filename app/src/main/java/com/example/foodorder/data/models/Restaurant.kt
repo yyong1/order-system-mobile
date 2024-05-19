@@ -3,11 +3,12 @@ package com.example.foodorder.data.models
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "restaurantData")
-data class RestaurantData(
+@Entity(tableName = "restaurant")
+data class Restaurant(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val name: String,
-    val location: String,
-    val isPopular: Boolean
+    val locationLatitude: Double,
+    val locationLongitude: Double,
+    val isPopular: Boolean = false
 )

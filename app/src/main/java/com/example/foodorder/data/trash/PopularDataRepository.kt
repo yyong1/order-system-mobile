@@ -1,7 +1,4 @@
-package com.example.foodorder.data.database
-
-import com.example.foodorder.data.dao.PopularDataDao
-import com.example.foodorder.data.models.PopularData
+package com.example.foodorder.data.trash
 
 class PopularDataRepository(private val popularDataDao: PopularDataDao) {
     suspend fun savePopularData(popularList: List<PopularData>) {
