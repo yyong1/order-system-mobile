@@ -18,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.foodorder.ui.screens.homepage.BoxWithRes
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,6 +42,7 @@ import com.example.foodorder.ui.theme.Yellow500
 import com.example.foodorder.R
 import com.example.foodorder.data.trash.PopularData
 import com.example.foodorder.data.trash.PopularDataViewModel
+import com.example.foodorder.ui.components.common.BoxWithRes
 
 @Composable
 fun DetailsScreen(navController: NavController, popularDataTitle: String) {

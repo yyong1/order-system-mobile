@@ -19,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.foodorder.R
-import com.example.foodorder.ui.screens.homepage.BoxWithRes
+import com.example.foodorder.ui.components.common.BoxWithRes
 import com.example.foodorder.ui.theme.CardItemBg
 import com.example.foodorder.ui.theme.IconColor
 import com.example.foodorder.ui.theme.Yellow500
