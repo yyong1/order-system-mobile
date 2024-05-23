@@ -1,6 +1,7 @@
 package com.example.foodorder.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -13,6 +14,7 @@ import com.example.foodorder.data.trash.PopularDataViewModel
 import com.example.foodorder.data.viewmodels.UserViewModel
 import com.example.foodorder.data.viewmodels.CategoryViewModel
 import com.example.foodorder.data.viewmodels.OrderViewModel
+import com.example.foodorder.ui.screens.orders.OrderHistoryScreen
 
 @Composable
 fun Navigation(
@@ -20,32 +22,29 @@ fun Navigation(
     userViewModel: UserViewModel,
     popularDataViewModel: PopularDataViewModel,
     categoryViewModel: CategoryViewModel,
-    orderViewModel: OrderViewModel
+    orderViewModel: OrderViewModel,
+    modifier: Modifier = Modifier
 ) {
-    NavHost(navController = navController, startDestination = ScreensRoutes.Login.route) {
+    NavHost(
+        navController = navController,
+        startDestination = ScreensRoutes.Login.route,
+        modifier = modifier
+    ) {
         composable(ScreensRoutes.Home.route) {
             HomeScreen(
                 navController = navController,
                 popularDataViewModel = popularDataViewModel,
                 categoryViewModel = categoryViewModel,
                 onPopularDataClick = { popularData ->
-                    navController.navigate(
-                        "${ScreensRoutes.Details.route}/${popularData.title}"
-                    )
+                    navController.navigate("${ScreensRoutes.Details.route}/${popularData.title}")
                 }
             )
         }
         composable(ScreensRoutes.Login.route) {
-            LoginScreen(
-                navController = navController,
-                userViewModel = userViewModel
-            )
+            LoginScreen(navController = navController, userViewModel = userViewModel)
         }
         composable(ScreensRoutes.Registration.route) {
-            RegistrationScreen(
-                navController = navController,
-                userViewModel = userViewModel
-            )
+            RegistrationScreen(navController = navController, userViewModel = userViewModel)
         }
         composable(ScreensRoutes.Details.route) { backStackEntry ->
             val title = backStackEntry.arguments?.getString("title")
@@ -54,21 +53,8 @@ fun Navigation(
         composable(ScreensRoutes.Map.route) {
             MapScreen()
         }
+        composable(ScreensRoutes.Orders.route) {
+            OrderHistoryScreen()
+        }
     }
 }
-//@Composable
-//fun BottomNavBar(navController: (Any) -> Unit) {
-//    val items = listOf(
-//        BottomNavItem("Home", ScreensRoutes.Home.route),
-//        BottomNavItem("Map", ScreensRoutes.Map.route)
-//        BottomNavItem("Orders", ScreensRoutes.Orders.route),
-//    )
-//    BottomNavBar(items = items) { item ->
-//        navController.navigate(item.route)
-//    }
-//}
-//
-//data class BottomNavItem(
-//    val name: String,
-//    val route: String
-//)

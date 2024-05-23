@@ -1,6 +1,5 @@
 package com.example.foodorder
 
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,11 +11,11 @@ import androidx.navigation.compose.rememberNavController
 import com.example.foodorder.data.AppDatabase
 import com.example.foodorder.data.repository.*
 import com.example.foodorder.data.trash.PopularDataRepository
-import com.example.foodorder.ui.navigation.Navigation
 import com.example.foodorder.ui.theme.FoodOrderTheme
 import com.example.foodorder.data.trash.PopularDataViewModel
 import com.example.foodorder.data.trash.PopularDataViewModelFactory
 import com.example.foodorder.data.viewmodels.*
+import com.example.foodorder.ui.screens.MainScreen
 
 class MainActivity : ComponentActivity() {
     private lateinit var userViewModel: UserViewModel
@@ -26,8 +25,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        deleteDatabase(this)
 
         val popularDataDao = AppDatabase.getInstance(this).popularDataDao()
         val popularDataRepository = PopularDataRepository(popularDataDao)
@@ -51,10 +48,9 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             FoodOrderTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize()) {
                     val navController = rememberNavController()
-                    Navigation(
+                    MainScreen(
                         navController = navController,
                         userViewModel = userViewModel,
                         popularDataViewModel = popularDataViewModel,
@@ -64,9 +60,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-
-    private fun deleteDatabase(context: Context) {
-        context.deleteDatabase("app_database")
     }
 }
