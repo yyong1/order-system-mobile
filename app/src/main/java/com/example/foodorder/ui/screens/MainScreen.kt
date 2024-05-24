@@ -4,8 +4,10 @@ import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.example.foodorder.data.trash.PopularDataViewModel
@@ -31,14 +33,20 @@ fun MainScreen(
         BottomNavItem("Orders", ScreensRoutes.Orders.route, Icons.Default.ShoppingCart)
     )
 
+    var currentRoute by remember { mutableStateOf<String?>(null) }
+
+    LaunchedEffect(navController) {
+        navController.currentBackStackEntryFlow.collect { backStackEntry ->
+            currentRoute = backStackEntry.destination.route
+            Log.d("CurrentRoute MainScreen", "Current Route: $currentRoute")
+        }
+    }
+
     Scaffold(
         bottomBar = {
-            val currentRoute = navController.currentBackStackEntry?.destination?.route
-            Log.d("CurrentRoute", "Current Route: $currentRoute")
-            // TODO: FIX bottom nav bar showing on login and registration screens, logic is incorrect after login navigation = null
-//            if (currentRoute in listOf(ScreensRoutes.Home.route, ScreensRoutes.Map.route, ScreensRoutes.Orders.route)) {
+            if (currentRoute in listOf(ScreensRoutes.Home.route, ScreensRoutes.Map.route, ScreensRoutes.Orders.route)) {
                 BottomNavBar(items = bottomNavItems, navController = navController, currentRoute = currentRoute)
-//            }
+            }
         }
     ) { innerPadding ->
         Navigation(
@@ -51,4 +59,3 @@ fun MainScreen(
         )
     }
 }
-
