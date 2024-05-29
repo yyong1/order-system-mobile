@@ -9,6 +9,7 @@ import com.example.foodorder.data.dao.*
 import com.example.foodorder.data.models.*
 import com.example.foodorder.data.trash.*
 import com.example.foodorder.data.utils.DrawableListConverter
+import com.example.foodorder.data.utils.DateTypeConverter
 
 
 @Database(
@@ -24,7 +25,7 @@ import com.example.foodorder.data.utils.DrawableListConverter
     version = 2, // Increment this version number
     exportSchema = false
 )
-@TypeConverters(DrawableListConverter::class)
+@TypeConverters(DrawableListConverter::class, DateTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun popularDataDao(): PopularDataDao

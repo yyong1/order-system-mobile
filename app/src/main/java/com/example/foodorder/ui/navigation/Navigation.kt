@@ -54,7 +54,7 @@ fun Navigation(
             MapScreen()
         }
         composable(ScreensRoutes.Orders.route) {
-            OrderHistoryScreen()
+            OrderHistoryScreen(orderViewModel = orderViewModel)
         }
     }
 }
