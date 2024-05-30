@@ -11,6 +11,8 @@ import java.util.Date
 @Dao
 interface OrderDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(order: List<Order>)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(order: Order)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
