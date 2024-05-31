@@ -10,12 +10,13 @@ import com.example.foodorder.data.models.Category
 interface CategoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(categories: List<Category>)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(category: Category)
 
-    @Query("SELECT * FROM category WHERE categoryId = :categoryId")
+    @Query("SELECT * FROM categories WHERE categoryId = :categoryId")
     suspend fun getCategoryById(categoryId: Int): Category?
 
-    @Query("SELECT * FROM category")
+    @Query("SELECT * FROM categories")
     suspend fun getAllCategories(): List<Category>
 }

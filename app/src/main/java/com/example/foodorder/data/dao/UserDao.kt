@@ -11,6 +11,9 @@ import com.example.foodorder.data.models.User
 @Dao
 interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(users: List<User>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(user: User)
 
     @Query("SELECT * FROM users WHERE id = :userId")

@@ -1,7 +1,6 @@
 package com.example.foodorder.data.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.foodorder.data.models.Order
@@ -9,7 +8,7 @@ import com.example.foodorder.data.repository.OrderRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Date
 
 class OrderViewModel(private val orderRepository: OrderRepository) : ViewModel() {
 
@@ -28,17 +27,24 @@ class OrderViewModel(private val orderRepository: OrderRepository) : ViewModel()
         }
     }
 
-    suspend fun saveOrder(order: Order) {
+    fun saveOrder(order: Order) {
         viewModelScope.launch {
             orderRepository.saveOrder(order)
         }
     }
 
-    suspend fun getAllOrders(): List<Order> {
-        return orderRepository.getAllOrders()
+    fun fetchAllOrders() {
+        viewModelScope.launch {
+            val allOrders = orderRepository.getAllOrders()
+            Log.d("OrderViewModel", "Fetched all orders: $allOrders")
+            _orders.value = allOrders
+        }
     }
 
-    suspend fun getOrderById(orderId: Int): Order? {
-        return orderRepository.getOrderById(orderId)
+    fun getOrderById(orderId: Int) {
+        viewModelScope.launch {
+            val order = orderRepository.getOrderById(orderId)
+            _orders.value = listOfNotNull(order)
+        }
     }
 }

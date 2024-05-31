@@ -1,5 +1,6 @@
 package com.example.foodorder.ui.screens.orders
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,9 +17,14 @@ fun OrderHistoryScreen(orderViewModel: OrderViewModel) {
     val orders by orderViewModel.orders.collectAsState(initial = emptyList())
     val coroutineScope = rememberCoroutineScope()
 
+    LaunchedEffect(Unit) {
+        orderViewModel.fetchAllOrders()
+        Log.d("OrderHistoryScreen", "Fetching all orders")
+    }
+
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-        // Filter options
         FilterOptions { startDate, endDate ->
+            Log.d("OrderHistoryScreen", "Filter selected: startDate=$startDate, endDate=$endDate")
             coroutineScope.launch {
                 orderViewModel.fetchOrders(userId = 1, startDate, endDate)
             }
@@ -47,6 +53,7 @@ fun FilterOptions(onFilterSelected: (Date, Date) -> Unit) {
                     "This Month" -> getStartAndEndOfMonth()
                     else -> getStartAndEndOfAllTime()
                 }
+                Log.d("FilterOptions", "Button clicked: filter=$filter, startDate=$startDate, endDate=$endDate")
                 onFilterSelected(startDate, endDate)
             }) {
                 Text(text = filter)
@@ -79,7 +86,7 @@ fun getStartAndEndOfMonth(): Pair<Date, Date> {
 }
 
 fun getStartAndEndOfAllTime(): Pair<Date, Date> {
-    val startDate = Date(0) // Unix epoch start
-    val endDate = Date() // Current date
+    val startDate = Date(0)
+    val endDate = Date()
     return Pair(startDate, endDate)
 }

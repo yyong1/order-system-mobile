@@ -3,7 +3,7 @@ package com.example.foodorder.data.models
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "category")
+@Entity(tableName = "categories")
 data class Category(
     @PrimaryKey(autoGenerate = true)
     val categoryId: Int = 0,

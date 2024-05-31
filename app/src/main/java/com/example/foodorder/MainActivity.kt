@@ -1,6 +1,7 @@
 package com.example.foodorder
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -16,6 +17,9 @@ import com.example.foodorder.data.trash.PopularDataViewModel
 import com.example.foodorder.data.trash.PopularDataViewModelFactory
 import com.example.foodorder.data.viewmodels.*
 import com.example.foodorder.ui.screens.MainScreen
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     private lateinit var userViewModel: UserViewModel
@@ -25,23 +29,25 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("MainActivity", "onCreate triggered")
+        val database = AppDatabase.getInstance(this)
 
-        val popularDataDao = AppDatabase.getInstance(this).popularDataDao()
+        val popularDataDao = database.popularDataDao()
         val popularDataRepository = PopularDataRepository(popularDataDao)
         val popularDataViewModelFactory = PopularDataViewModelFactory(popularDataRepository)
         popularDataViewModel = ViewModelProvider(this, popularDataViewModelFactory)[PopularDataViewModel::class.java]
 
-        val userDao = AppDatabase.getInstance(this).userDao()
+        val userDao = database.userDao()
         val userRepository = UserRepository(userDao)
         val userViewModelFactory = UserViewModelFactory(userRepository)
         userViewModel = ViewModelProvider(this, userViewModelFactory)[UserViewModel::class.java]
 
-        val categoryDao = AppDatabase.getInstance(this).categoryDao()
+        val categoryDao = database.categoryDao()
         val categoryRepository = CategoryRepository(categoryDao)
         val categoryViewModelFactory = CategoryViewModelFactory(categoryRepository)
         categoryViewModel = ViewModelProvider(this, categoryViewModelFactory)[CategoryViewModel::class.java]
 
-        val orderDao = AppDatabase.getInstance(this).orderDao()
+        val orderDao = database.orderDao()
         val orderRepository = OrderRepository(orderDao)
         val orderViewModelFactory = OrderViewModelFactory(orderRepository)
         orderViewModel = ViewModelProvider(this, orderViewModelFactory)[OrderViewModel::class.java]
@@ -60,5 +66,16 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
+        // Recreate and populate the database
+        CoroutineScope(Dispatchers.IO).launch {
+            recreateAndPopulateDatabase(database)
+        }
+    }
+
+    private suspend fun recreateAndPopulateDatabase(database: AppDatabase) {
+        AppDatabase.clearAllTables(database)
+        AppDatabase.populateDatabase(database)
     }
 }
+

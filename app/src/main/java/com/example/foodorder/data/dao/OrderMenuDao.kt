@@ -11,6 +11,7 @@ import com.example.foodorder.data.models.OrderMenu
 interface OrderMenuDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(orderMenu: List<OrderMenu>)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(orderMenu: OrderMenu)
 

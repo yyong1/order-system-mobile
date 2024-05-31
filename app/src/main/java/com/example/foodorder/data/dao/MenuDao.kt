@@ -10,12 +10,13 @@ import com.example.foodorder.data.models.Menu
 interface MenuDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(menu: List<Menu>)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(menu: Menu)
 
-    @Query("SELECT * FROM menu WHERE menuId = :menuId")
+    @Query("SELECT * FROM menus WHERE menuId = :menuId")
     suspend fun getMenuById(menuId: Int): Menu?
 
-    @Query("SELECT * FROM menu")
+    @Query("SELECT * FROM menus")
     suspend fun getAllMenus(): List<Menu>
 }

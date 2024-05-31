@@ -7,7 +7,7 @@ import androidx.room.TypeConverters
 import com.example.foodorder.data.utils.DrawableListConverter
 
 @Entity(
-    tableName = "Menu",
+    tableName = "menus",
     foreignKeys = [
         ForeignKey(entity = Restaurant::class, parentColumns = ["id"], childColumns = ["restaurantId"]),
         ForeignKey(entity = Category::class, parentColumns = ["categoryId"], childColumns = ["categoryId"])

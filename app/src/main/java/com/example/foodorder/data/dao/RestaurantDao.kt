@@ -11,12 +11,13 @@ import com.example.foodorder.data.models.Restaurant
 interface RestaurantDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(restaurant: List<Restaurant>)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(restaurant: Restaurant)
 
-    @Query("SELECT * FROM restaurant WHERE id = :restaurantId")
+    @Query("SELECT * FROM restaurants WHERE id = :restaurantId")
     suspend fun getRestaurantById(restaurantId: Int): Restaurant?
 
-    @Query("SELECT * FROM restaurant")
+    @Query("SELECT * FROM restaurants")
     suspend fun getAllRestaurants(): List<Restaurant>
 }
