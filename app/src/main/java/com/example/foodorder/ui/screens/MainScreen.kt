@@ -12,9 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.example.foodorder.data.trash.PopularDataViewModel
-import com.example.foodorder.data.viewmodels.CategoryViewModel
-import com.example.foodorder.data.viewmodels.OrderViewModel
-import com.example.foodorder.data.viewmodels.UserViewModel
+import com.example.foodorder.data.viewmodels.*
 import com.example.foodorder.ui.components.navigation.BottomNavBar
 import com.example.foodorder.ui.components.navigation.BottomNavItem
 import com.example.foodorder.ui.navigation.Navigation
@@ -26,7 +24,8 @@ fun MainScreen(
     userViewModel: UserViewModel,
     popularDataViewModel: PopularDataViewModel,
     categoryViewModel: CategoryViewModel,
-    orderViewModel: OrderViewModel
+    orderViewModel: OrderViewModel,
+    cartViewModel: CartViewModel
 ) {
     val bottomNavItems = listOf(
         BottomNavItem("Home", ScreensRoutes.Home.route, Icons.Default.Home),
@@ -45,7 +44,7 @@ fun MainScreen(
 
     Scaffold(
         bottomBar = {
-            if (currentRoute in listOf(ScreensRoutes.Home.route, ScreensRoutes.Map.route, ScreensRoutes.Orders.route)) {
+            if (currentRoute in listOf(ScreensRoutes.Home.route, ScreensRoutes.Map.route, ScreensRoutes.Profile.route)) {
                 BottomNavBar(items = bottomNavItems, navController = navController, currentRoute = currentRoute)
             }
         }
@@ -56,6 +55,7 @@ fun MainScreen(
             popularDataViewModel = popularDataViewModel,
             categoryViewModel = categoryViewModel,
             orderViewModel = orderViewModel,
+            cartViewModel = cartViewModel,
             modifier = Modifier.padding(innerPadding)
         )
     }

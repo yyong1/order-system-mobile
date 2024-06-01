@@ -26,6 +26,8 @@ class MainActivity : ComponentActivity() {
     private lateinit var popularDataViewModel: PopularDataViewModel
     private lateinit var categoryViewModel: CategoryViewModel
     private lateinit var orderViewModel: OrderViewModel
+    private lateinit var cartViewModel: CartViewModel // Add CartViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +55,12 @@ class MainActivity : ComponentActivity() {
         val orderViewModelFactory = OrderViewModelFactory(orderRepository)
         orderViewModel = ViewModelProvider(this, orderViewModelFactory)[OrderViewModel::class.java]
 
+        val cartDao = database.cartDao()
+        val cartRepository = CartRepository(cartDao)
+        val cartViewModelFactory = CartViewModelFactory(cartRepository)
+        cartViewModel = ViewModelProvider(this, cartViewModelFactory)[CartViewModel::class.java]
+
+
         setContent {
             FoodOrderTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
@@ -62,7 +70,8 @@ class MainActivity : ComponentActivity() {
                         userViewModel = userViewModel,
                         popularDataViewModel = popularDataViewModel,
                         categoryViewModel = categoryViewModel,
-                        orderViewModel = orderViewModel
+                        orderViewModel = orderViewModel,
+                        cartViewModel = cartViewModel
                     )
                 }
             }

@@ -26,9 +26,10 @@ import kotlinx.coroutines.launch
         Menu::class,
         Restaurant::class,
         Order::class,
-        OrderMenu::class
+        OrderMenu::class,
+        CartItem::class
     ],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 @TypeConverters(DrawableListConverter::class, DateTypeConverter::class)
@@ -40,6 +41,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun restaurantDao(): RestaurantDao
     abstract fun orderDao(): OrderDao
     abstract fun orderMenuDao(): OrderMenuDao
+    abstract fun cartDao(): CartDao
+
 
     companion object {
         @Volatile
@@ -93,12 +96,10 @@ abstract class AppDatabase : RoomDatabase() {
             Log.d("AppDatabase", "Populating database with sample data")
 
             try {
-                // Insert Users first
                 Log.d("AppDatabase", "Inserting users")
                 userDao.insertAll(SampleData.users)
                 Log.d("AppDatabase", "Users inserted")
 
-                // Insert Categories and Restaurants
                 Log.d("AppDatabase", "Inserting categories")
                 categoryDao.insertAll(SampleData.categories)
                 Log.d("AppDatabase", "Categories inserted")
@@ -107,17 +108,14 @@ abstract class AppDatabase : RoomDatabase() {
                 restaurantDao.insertAll(SampleData.restaurants)
                 Log.d("AppDatabase", "Restaurants inserted")
 
-                // Insert Menus after Categories and Restaurants
                 Log.d("AppDatabase", "Inserting menus")
                 menuDao.insertAll(SampleData.menus)
                 Log.d("AppDatabase", "Menus inserted")
 
-                // Insert Orders after Users and Restaurants
                 Log.d("AppDatabase", "Inserting orders")
                 orderDao.insertAll(SampleData.orders)
                 Log.d("AppDatabase", "Orders inserted")
 
-                // Insert OrderMenus after Orders and Menus
                 Log.d("AppDatabase", "Inserting order menus")
                 orderMenuDao.insertAll(SampleData.orderMenus)
                 Log.d("AppDatabase", "Order menus inserted")

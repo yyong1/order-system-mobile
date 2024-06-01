@@ -16,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.foodorder.R
+import com.example.foodorder.data.viewmodels.CartViewModel
 import com.example.foodorder.ui.components.common.BoxWithRes
 import com.example.foodorder.ui.navigation.ScreensRoutes
 import com.example.foodorder.ui.theme.Orange500
@@ -28,9 +29,9 @@ fun Header(navController: NavHostController) {
         modifier = Modifier.fillMaxWidth()
     ) {
         BoxWithRes(
-            resId = R.drawable.menu,
-            description = "Map",
-            modifier = Modifier.clickable { navController.navigate(ScreensRoutes.Map.route) }
+            resId = R.drawable.shopping_cart,
+            description = "Shopping Cart",
+            modifier = Modifier.clickable { navController.navigate(ScreensRoutes.Cart.route) }
         )
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(

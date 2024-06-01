@@ -11,9 +11,11 @@ import com.example.foodorder.ui.screens.log.LoginScreen
 import com.example.foodorder.ui.screens.map.MapScreen
 import com.example.foodorder.ui.screens.reg.RegistrationScreen
 import com.example.foodorder.data.trash.PopularDataViewModel
+import com.example.foodorder.data.viewmodels.CartViewModel
 import com.example.foodorder.data.viewmodels.UserViewModel
 import com.example.foodorder.data.viewmodels.CategoryViewModel
 import com.example.foodorder.data.viewmodels.OrderViewModel
+import com.example.foodorder.ui.screens.cart.CartScreen
 //import com.example.foodorder.ui.screens.profile.orders.OrderHistoryScreen
 import com.example.foodorder.ui.screens.profile.UserProfileScreen
 
@@ -24,6 +26,7 @@ fun Navigation(
     popularDataViewModel: PopularDataViewModel,
     categoryViewModel: CategoryViewModel,
     orderViewModel: OrderViewModel,
+    cartViewModel: CartViewModel,
     modifier: Modifier = Modifier
 ) {
     NavHost(
@@ -54,11 +57,11 @@ fun Navigation(
         composable(ScreensRoutes.Map.route) {
             MapScreen()
         }
-//        composable(ScreensRoutes.Orders.route) {
-//            OrderHistoryScreen(orderViewModel = orderViewModel)
-//        }
         composable(ScreensRoutes.Profile.route) {
              UserProfileScreen(userViewModel = userViewModel, orderViewModel = orderViewModel)
+        }
+        composable(ScreensRoutes.Cart.route) {
+            CartScreen(cartViewModel = cartViewModel, navController = navController)
         }
     }
 }
