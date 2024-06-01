@@ -1,4 +1,4 @@
-package com.example.foodorder.ui.screens.orders
+package com.example.foodorder.ui.screens.profile
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*

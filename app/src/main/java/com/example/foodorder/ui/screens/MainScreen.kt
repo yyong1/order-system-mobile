@@ -6,6 +6,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -30,7 +31,7 @@ fun MainScreen(
     val bottomNavItems = listOf(
         BottomNavItem("Home", ScreensRoutes.Home.route, Icons.Default.Home),
         BottomNavItem("Map", ScreensRoutes.Map.route, Icons.Default.LocationOn),
-        BottomNavItem("Orders", ScreensRoutes.Orders.route, Icons.Default.ShoppingCart)
+        BottomNavItem("Profile", ScreensRoutes.Profile.route, Icons.Default.Person)
     )
 
     var currentRoute by remember { mutableStateOf<String?>(null) }
