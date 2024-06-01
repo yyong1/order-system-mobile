@@ -69,7 +69,8 @@ fun Login(navController: NavHostController, userViewModel: UserViewModel) {
 //        id = 1,
         name = "test",
         email = "test",
-        password = "123"
+        password = "123",
+        favoriteRestaurant = ""
     )
     Box(modifier = Modifier.fillMaxSize()) {
         Image(

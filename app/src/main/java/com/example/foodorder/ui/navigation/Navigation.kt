@@ -15,6 +15,7 @@ import com.example.foodorder.data.viewmodels.UserViewModel
 import com.example.foodorder.data.viewmodels.CategoryViewModel
 import com.example.foodorder.data.viewmodels.OrderViewModel
 import com.example.foodorder.ui.screens.orders.OrderHistoryScreen
+import com.example.foodorder.ui.screens.profile.UserProfileScreen
 
 @Composable
 fun Navigation(
@@ -55,6 +56,9 @@ fun Navigation(
         }
         composable(ScreensRoutes.Orders.route) {
             OrderHistoryScreen(orderViewModel = orderViewModel)
+        }
+        composable(ScreensRoutes.Profile.route) {
+             UserProfileScreen(userViewModel = userViewModel, orderViewModel = orderViewModel)
         }
     }
 }

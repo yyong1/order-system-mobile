@@ -7,4 +7,5 @@ sealed class ScreensRoutes(val route: String) {
     object Registration : ScreensRoutes("registration")
     object Map : ScreensRoutes("map")
     object Orders : ScreensRoutes("orders")
+    object Profile : ScreensRoutes("profile")
 }

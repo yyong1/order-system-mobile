@@ -24,8 +24,8 @@ object SampleData {
     )
 
     val users = listOf(
-        User(id = 1, name = "John Doe", email = "john.doe@example.com", password = "password123"),
-        User(id = 2, name = "Jane Smith", email = "jane.smith@example.com", password = "password123")
+        User(id = 1, name = "John Doe", email = "john.doe@example.com", password = "password123", favoriteRestaurant = "Sarajevo Grill"),
+        User(id = 2, name = "Jane Smith", email = "jane.smith@example.com", password = "password123", favoriteRestaurant = "")
     )
 
     val orders = listOf(

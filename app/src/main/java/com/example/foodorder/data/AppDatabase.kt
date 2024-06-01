@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
         Order::class,
         OrderMenu::class
     ],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 @TypeConverters(DrawableListConverter::class, DateTypeConverter::class)

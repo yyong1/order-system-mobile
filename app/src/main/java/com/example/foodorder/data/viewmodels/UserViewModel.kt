@@ -18,4 +18,12 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
         val user = userRepository.getUserByEmail(email)
         return (user?.email == email && user?.password == password)
     }
+
+    suspend fun updateUser(userId: Int, name: String, email: String, favoriteRestaurant: String) {
+        userRepository.updateUser(userId, name, email, favoriteRestaurant)
+    }
+
+    suspend fun getUserById(userId: Int): User? {
+        return userRepository.getUserById(userId)
+    }
 }

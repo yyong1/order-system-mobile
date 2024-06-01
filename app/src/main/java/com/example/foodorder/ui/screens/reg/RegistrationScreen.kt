@@ -109,7 +109,7 @@ fun Registration(navController: NavHostController, userViewModel: UserViewModel)
             RegFooter(
                 onRegClick = {
                     scope.launch {
-                        val newUser = User(name = userName, email = userEmail, password = password)
+                        val newUser = User(name = userName, email = userEmail, password = password, favoriteRestaurant = "")
                         userViewModel.registerUser(newUser)
                         navController.navigate(ScreensRoutes.Home.route)
                     }

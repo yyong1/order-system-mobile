@@ -30,6 +30,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("MainActivity", "onCreate triggered")
+
         val database = AppDatabase.getInstance(this)
 
         val popularDataDao = database.popularDataDao()
