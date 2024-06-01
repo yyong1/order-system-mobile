@@ -9,9 +9,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -28,10 +31,13 @@ fun Header(navController: NavHostController) {
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxWidth()
     ) {
-        BoxWithRes(
-            resId = R.drawable.shopping_cart,
-            description = "Shopping Cart",
-            modifier = Modifier.clickable { navController.navigate(ScreensRoutes.Cart.route) }
+        Icon(
+            imageVector = Icons.Default.ShoppingCart,
+            contentDescription = "Shopping Cart",
+            modifier = Modifier
+                .clickable { navController.navigate(ScreensRoutes.Cart.route) }
+                .size(24.dp),
+            tint = Color.Black
         )
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
@@ -42,7 +48,6 @@ fun Header(navController: NavHostController) {
             )
             Spacer(modifier = Modifier.width(8.dp))
 
-            // Should be dynamic rendering
             Text(text = "Sarajevo, BiH")
             Spacer(modifier = Modifier.width(8.dp))
             Icon(
