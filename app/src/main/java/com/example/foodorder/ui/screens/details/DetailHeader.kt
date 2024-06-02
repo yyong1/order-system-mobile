@@ -36,7 +36,10 @@ fun DetailHeader(navController: NavController) {
         BoxWithRes(
             resId = R.drawable.arrow_left,
             description = "Left",
-            navController = navController
+            navController = navController,
+            onClick = {
+                navController.popBackStack()
+            }
         )
 
 

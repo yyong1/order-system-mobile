@@ -19,12 +19,15 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.foodorder.ui.theme.*
 import com.example.foodorder.R
+import com.example.foodorder.data.models.CartItem
 import com.example.foodorder.data.models.Menu
+import com.example.foodorder.data.viewmodels.CartViewModel
 
 @Composable
 fun PopularItem(
     popularData: Menu,
     navController: NavController,
+    cartViewModel: CartViewModel,
     onPopularDataClick: (Menu) -> Unit
 ) {
     Column {
@@ -103,7 +106,17 @@ fun PopularItem(
                             modifier = Modifier
                                 .size(width = 60.dp, height = 40.dp)
                                 .clip(RoundedCornerShape(bottomStart = 18.dp, topEnd = 18.dp))
-                                .background(Yellow500),
+                                .background(Yellow500)
+                                .clickable {
+                                    val cartItem = CartItem(
+                                        id = 0, // Use 0 for auto-generated ID
+                                        menuItemId = popularData.menuId,
+                                        menuItemName = popularData.title,
+                                        menuItemPrice = popularData.price,
+                                        quantity = 1
+                                    )
+                                    cartViewModel.addCartItem(cartItem)
+                                },
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(

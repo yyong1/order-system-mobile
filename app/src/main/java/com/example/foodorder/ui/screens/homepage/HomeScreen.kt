@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.foodorder.data.models.Menu
+import com.example.foodorder.data.viewmodels.CartViewModel
 import com.example.foodorder.data.viewmodels.CategoryViewModel
 import com.example.foodorder.data.viewmodels.MenuViewModel
 import com.example.foodorder.ui.screens.homepage.header.Header
@@ -25,6 +26,7 @@ fun HomeScreen(
     navController: NavHostController,
     menuViewModel: MenuViewModel,
     categoryViewModel: CategoryViewModel,
+    cartViewModel: CartViewModel,
     onPopularDataClick: (Menu) -> Unit
 ) {
     val scrollState = rememberScrollState()
@@ -51,6 +53,7 @@ fun HomeScreen(
             PopularList(
                 popularList = popularMenus,
                 navController = navController,
+                cartViewModel = cartViewModel,
                 onPopularDataClick = onPopularDataClick
             )
         }

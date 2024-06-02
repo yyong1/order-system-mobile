@@ -19,7 +19,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.foodorder.R
-import com.example.foodorder.data.viewmodels.CartViewModel
 import com.example.foodorder.ui.components.common.BoxWithRes
 import com.example.foodorder.ui.navigation.ScreensRoutes
 import com.example.foodorder.ui.theme.Orange500
@@ -57,6 +56,8 @@ fun Header(navController: NavHostController) {
                 tint = Orange500
             )
         }
-        BoxWithRes(resId = R.drawable.search, description = "Search")
+        BoxWithRes(resId = R.drawable.search, description = "Search", onClick = {
+//            if (quantity > 1) quantity--
+        })
     }
 }

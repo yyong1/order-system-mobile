@@ -39,7 +39,7 @@ fun Navigation(
         modifier = modifier
     ) {
         composable(ScreensRoutes.Home.route) {
-            HomeScreen(navController = navController, menuViewModel = menuViewModel, categoryViewModel = categoryViewModel, onPopularDataClick = {
+            HomeScreen(navController = navController, menuViewModel = menuViewModel, categoryViewModel = categoryViewModel,cartViewModel = cartViewModel, onPopularDataClick = {
                 navController.navigate("details/${it.menuId}")
             })
         }
@@ -54,7 +54,7 @@ fun Navigation(
             arguments = listOf(navArgument("menuId") { type = NavType.IntType })
         ) { backStackEntry ->
             val menuId = backStackEntry.arguments?.getInt("menuId")
-            menuId?.let { DetailsScreen(navController = navController, menuId = it, menuViewModel = menuViewModel) }
+            menuId?.let { DetailsScreen(navController = navController, menuId = it, menuViewModel = menuViewModel, cartViewModel = cartViewModel) }
         }
         composable(ScreensRoutes.Map.route) {
             MapScreen()
@@ -63,7 +63,7 @@ fun Navigation(
             UserProfileScreen(userViewModel = userViewModel, orderViewModel = orderViewModel)
         }
         composable(ScreensRoutes.Cart.route) {
-            CartScreen(cartViewModel = cartViewModel, navController = navController)
+            CartScreen(cartViewModel = cartViewModel, menuViewModel =  menuViewModel, orderViewModel = orderViewModel, navController = navController)
         }
     }
 }

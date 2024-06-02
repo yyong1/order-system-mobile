@@ -2,6 +2,7 @@ package com.example.foodorder.ui.screens.details
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
@@ -16,19 +17,28 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.foodorder.R
+import com.example.foodorder.data.models.CartItem
+import com.example.foodorder.data.viewmodels.CartViewModel
 import com.example.foodorder.data.viewmodels.MenuViewModel
-import com.example.foodorder.ui.components.common.BoxWithRes
+import com.example.foodorder.ui.components.common.BoxWithResForDetails
 import com.example.foodorder.ui.theme.*
 
-
 @Composable
-fun DetailsScreen(navController: NavController, menuId: Int, menuViewModel: MenuViewModel) {
+fun DetailsScreen(
+    navController: NavController,
+    menuId: Int,
+    menuViewModel: MenuViewModel,
+    cartViewModel: CartViewModel = viewModel()
+) {
     val menus by menuViewModel.allMenus.collectAsState(initial = emptyList())
     val menuItem = menus.find { it.menuId == menuId }
 
     menuItem?.let { data ->
+        var quantity by remember { mutableStateOf(1) }
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -85,18 +95,21 @@ fun DetailsScreen(navController: NavController, menuId: Int, menuViewModel: Menu
                 }
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    BoxWithRes(
+                    BoxWithResForDetails(
                         resId = R.drawable.minus,
                         description = "Minus",
                         iconSize = 16,
                         boxSize = 36,
-                        iconColor = BlackTextColor
+                        iconColor = BlackTextColor,
+                        onClick = {
+                            if (quantity > 1) quantity--
+                        }
                     )
 
                     Spacer(modifier = Modifier.width(14.dp))
 
                     Text(
-                        text = "01",
+                        text = "$quantity",
                         style = Typography.body2,
                         fontSize = 18.sp,
                         color = BlackTextColor
@@ -104,13 +117,16 @@ fun DetailsScreen(navController: NavController, menuId: Int, menuViewModel: Menu
 
                     Spacer(modifier = Modifier.width(14.dp))
 
-                    BoxWithRes(
+                    BoxWithResForDetails(
                         resId = R.drawable.add,
                         description = "Add",
                         iconSize = 16,
                         boxSize = 36,
                         iconColor = Color.White,
-                        bgColor = Yellow500
+                        bgColor = Yellow500,
+                        onClick = {
+                            quantity++
+                        }
                     )
                 }
             }
@@ -171,7 +187,17 @@ fun DetailsScreen(navController: NavController, menuId: Int, menuViewModel: Menu
                 modifier = Modifier
                     .size(width = 203.dp, height = 56.dp)
                     .clip(RoundedCornerShape(topStart = 18.dp, topEnd = 18.dp))
-                    .background(Yellow500),
+                    .background(Yellow500)
+                    .clickable {
+                        val cartItem = CartItem(
+                            id = 0,
+                            menuItemId = data.menuId,
+                            menuItemName = data.title,
+                            menuItemPrice = data.price,
+                            quantity = quantity
+                        )
+                        cartViewModel.addCartItem(cartItem)
+                    },
                 contentAlignment = Alignment.Center
             ) {
                 Text(text = "Add to cart", style = Typography.body1, color = Color.White)
