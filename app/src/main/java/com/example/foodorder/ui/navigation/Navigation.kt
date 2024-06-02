@@ -14,9 +14,9 @@ import com.example.foodorder.data.trash.PopularDataViewModel
 import com.example.foodorder.data.viewmodels.CartViewModel
 import com.example.foodorder.data.viewmodels.UserViewModel
 import com.example.foodorder.data.viewmodels.CategoryViewModel
+import com.example.foodorder.data.viewmodels.MenuViewModel
 import com.example.foodorder.data.viewmodels.OrderViewModel
 import com.example.foodorder.ui.screens.cart.CartScreen
-//import com.example.foodorder.ui.screens.profile.orders.OrderHistoryScreen
 import com.example.foodorder.ui.screens.profile.UserProfileScreen
 
 @Composable
@@ -27,6 +27,7 @@ fun Navigation(
     categoryViewModel: CategoryViewModel,
     orderViewModel: OrderViewModel,
     cartViewModel: CartViewModel,
+    menuViewModel: MenuViewModel,
     modifier: Modifier = Modifier
 ) {
     NavHost(
@@ -37,7 +38,8 @@ fun Navigation(
         composable(ScreensRoutes.Home.route) {
             HomeScreen(
                 navController = navController,
-                popularDataViewModel = popularDataViewModel,
+//                popularDataViewModel = popularDataViewModel,
+                menuViewModel = menuViewModel,
                 categoryViewModel = categoryViewModel,
                 onPopularDataClick = { popularData ->
                     navController.navigate("${ScreensRoutes.Details.route}/${popularData.title}")

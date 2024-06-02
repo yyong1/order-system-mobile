@@ -17,15 +17,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.foodorder.data.trash.PopularData
 import com.example.foodorder.ui.theme.*
 import com.example.foodorder.R
+import com.example.foodorder.data.models.Menu
 
 @Composable
 fun PopularItem(
-    popularData: PopularData,
+    popularData: Menu,
     navController: NavController,
-    onPopularDataClick: (PopularData) -> Unit
+    onPopularDataClick: (Menu) -> Unit
 ) {
     Column {
         Box(

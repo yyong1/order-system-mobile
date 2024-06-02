@@ -17,6 +17,7 @@ data class Menu(
     @PrimaryKey(autoGenerate = true)
     val menuId: Int = 0,
     val restaurantId: Int,
+    val resId: Int,
     val title: String,
     val description: String?,
     val price: Double,

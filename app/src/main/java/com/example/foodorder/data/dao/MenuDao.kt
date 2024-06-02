@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.foodorder.data.models.Menu
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MenuDao {
@@ -18,5 +19,5 @@ interface MenuDao {
     suspend fun getMenuById(menuId: Int): Menu?
 
     @Query("SELECT * FROM menus")
-    suspend fun getAllMenus(): List<Menu>
+    fun getAllMenus(): Flow<List<Menu>>
 }

@@ -25,7 +25,8 @@ fun MainScreen(
     popularDataViewModel: PopularDataViewModel,
     categoryViewModel: CategoryViewModel,
     orderViewModel: OrderViewModel,
-    cartViewModel: CartViewModel
+    cartViewModel: CartViewModel,
+    menuViewModel: MenuViewModel
 ) {
     val bottomNavItems = listOf(
         BottomNavItem("Home", ScreensRoutes.Home.route, Icons.Default.Home),
@@ -56,6 +57,7 @@ fun MainScreen(
             categoryViewModel = categoryViewModel,
             orderViewModel = orderViewModel,
             cartViewModel = cartViewModel,
+            menuViewModel = menuViewModel,
             modifier = Modifier.padding(innerPadding)
         )
     }

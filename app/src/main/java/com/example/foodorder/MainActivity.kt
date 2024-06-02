@@ -26,7 +26,8 @@ class MainActivity : ComponentActivity() {
     private lateinit var popularDataViewModel: PopularDataViewModel
     private lateinit var categoryViewModel: CategoryViewModel
     private lateinit var orderViewModel: OrderViewModel
-    private lateinit var cartViewModel: CartViewModel // Add CartViewModel
+    private lateinit var cartViewModel: CartViewModel
+    private lateinit var menuViewModel: MenuViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +40,11 @@ class MainActivity : ComponentActivity() {
         val popularDataRepository = PopularDataRepository(popularDataDao)
         val popularDataViewModelFactory = PopularDataViewModelFactory(popularDataRepository)
         popularDataViewModel = ViewModelProvider(this, popularDataViewModelFactory)[PopularDataViewModel::class.java]
+
+        val menuDao = database.menuDao()
+        val menuRepository = MenuRepository(menuDao)
+        val menuViewModelFactory = MenuViewModelFactory(menuRepository)
+        menuViewModel = ViewModelProvider(this, menuViewModelFactory)[MenuViewModel::class.java]
 
         val userDao = database.userDao()
         val userRepository = UserRepository(userDao)
@@ -71,7 +77,8 @@ class MainActivity : ComponentActivity() {
                         popularDataViewModel = popularDataViewModel,
                         categoryViewModel = categoryViewModel,
                         orderViewModel = orderViewModel,
-                        cartViewModel = cartViewModel
+                        cartViewModel = cartViewModel,
+                        menuViewModel = menuViewModel
                     )
                 }
             }

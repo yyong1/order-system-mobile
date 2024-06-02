@@ -18,9 +18,25 @@ object SampleData {
     )
 
     val menus = listOf(
-        Menu(menuId = 1, restaurantId = 1, title = "Cevapi", description = "Grilled minced meat", price = 5.0, rate = 4.5, calories = 300.0, scheduleTime = 15.0, categoryId = 2, ingredients = listOf(), isPopular = true),
-        Menu(menuId = 2, restaurantId = 1, title = "Pljeskavica", description = "Grilled meat patty", price = 6.0, rate = 4.7, calories = 350.0, scheduleTime = 20.0, categoryId = 2, ingredients = listOf(), isPopular = false),
-        Menu(menuId = 3, restaurantId = 2, title = "Burek", description = "Pastry filled with meat", price = 4.0, rate = 4.3, calories = 250.0, scheduleTime = 10.0, categoryId = 2, ingredients = listOf(), isPopular = true)
+        Menu(menuId = 1, restaurantId = 1, resId = R.drawable.salad_pesto_pizza, title = "Cevapi-pizza", description = "Grilled minced meat and pizza", price = 5.0, rate = 4.5, calories = 300.0, scheduleTime = 15.0, categoryId = 2, ingredients = listOf(
+            R.drawable.ing1,
+            R.drawable.ing2,
+            R.drawable.ing3,
+            R.drawable.ing4,
+            R.drawable.ing5,
+            ), isPopular = true),
+        Menu(menuId = 2, restaurantId = 1, resId = R.drawable.primavera_pizza, title = "Pljeskavica-pizza", description = "Grilled meat patty and pizza", price = 6.0, rate = 4.7, calories = 350.0, scheduleTime = 20.0, categoryId = 2, ingredients = listOf(
+            R.drawable.ing1,
+            R.drawable.ing2,
+            R.drawable.ing3,
+            R.drawable.ing4,
+            R.drawable.ing5,), isPopular = false),
+        Menu(menuId = 3, restaurantId = 2, resId = R.drawable.primavera_pizza, title = "Burek-pizza", description = "Pastry filled with meat and pizza", price = 4.0, rate = 4.3, calories = 250.0, scheduleTime = 10.0, categoryId = 2, ingredients = listOf(
+            R.drawable.ing1,
+            R.drawable.ing2,
+            R.drawable.ing3,
+            R.drawable.ing4,
+            R.drawable.ing5,), isPopular = true)
     )
 
     val users = listOf(

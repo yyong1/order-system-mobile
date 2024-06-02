@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
         OrderMenu::class,
         CartItem::class
     ],
-    version = 5,
+    version = 6,
     exportSchema = false
 )
 @TypeConverters(DrawableListConverter::class, DateTypeConverter::class)
@@ -42,6 +42,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun orderDao(): OrderDao
     abstract fun orderMenuDao(): OrderMenuDao
     abstract fun cartDao(): CartDao
+
 
 
     companion object {

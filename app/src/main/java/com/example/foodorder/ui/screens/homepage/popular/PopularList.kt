@@ -4,13 +4,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import com.example.foodorder.data.trash.PopularData
+import com.example.foodorder.data.models.Menu
 
 @Composable
 fun PopularList(
-    popularList: List<PopularData>,
+    popularList: List<Menu>,
     navController: NavController,
-    onPopularDataClick: (PopularData) -> Unit
+    onPopularDataClick: (Menu) -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
