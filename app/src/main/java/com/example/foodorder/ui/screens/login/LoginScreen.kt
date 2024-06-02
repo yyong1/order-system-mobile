@@ -27,11 +27,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.foodorder.R
 import com.example.foodorder.data.models.User
+import com.example.foodorder.data.viewmodels.UserViewModel
 import com.example.foodorder.ui.navigation.ScreensRoutes
 import com.example.foodorder.ui.screens.login.footer.LoginFooter
 import com.example.foodorder.ui.screens.login.form.LoginField
 import com.example.foodorder.ui.screens.login.header.LoginHeader
-import com.example.foodorder.ui.viewmodels.UserViewModel
 import kotlinx.coroutines.launch
 
 @Composable
@@ -60,7 +60,8 @@ fun Login(navController: NavHostController, userViewModel: UserViewModel) {
     val userTest = User(
         name = "test",
         email = "test",
-        password = "123"
+        password = "123",
+        favoriteRestaurant = ""
     )
 
     Box(modifier = Modifier.fillMaxSize()) {

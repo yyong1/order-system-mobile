@@ -27,11 +27,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.foodorder.R
 import com.example.foodorder.data.models.User
+import com.example.foodorder.data.viewmodels.UserViewModel
 import com.example.foodorder.ui.navigation.ScreensRoutes
 import com.example.foodorder.ui.screens.register.footer.RegFooter
 import com.example.foodorder.ui.screens.register.form.RegField
 import com.example.foodorder.ui.screens.register.header.RegHeader
-import com.example.foodorder.ui.viewmodels.UserViewModel
 import kotlinx.coroutines.launch
 
 @Composable
@@ -123,7 +123,7 @@ fun Registration(navController: NavHostController, userViewModel: UserViewModel)
                     if (!newErrorMessage.hasErrors()) {
                         scope.launch {
                             val newUser =
-                                User(name = userName, email = userEmail, password = password)
+                                User(name = userName, email = userEmail, password = password, favoriteRestaurant = "")
                             userViewModel.registerUser(newUser)
                             navController.navigate(ScreensRoutes.Home.route)
                         }
