@@ -8,9 +8,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.example.foodorder.data.models.Category
+import com.example.foodorder.data.viewmodels.CategoryViewModel
 
 @Composable
-fun CategoryList(categories: List<Category>) {
+fun CategoryList(categories: List<Category>, categoryViewModel: CategoryViewModel) {
     val selectedIndex = remember { mutableStateOf(0) }
 
     LazyRow(
@@ -21,7 +22,10 @@ fun CategoryList(categories: List<Category>) {
             CategoryItem(
                 category = categories[index],
                 selectedIndex = selectedIndex,
-                index = index
+                index = index,
+                onCategorySelected = {
+                    categoryViewModel.selectCategory(it)
+                }
             )
         }
     }

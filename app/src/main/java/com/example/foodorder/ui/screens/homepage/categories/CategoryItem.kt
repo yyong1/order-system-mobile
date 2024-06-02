@@ -1,3 +1,4 @@
+
 package com.example.foodorder.ui.screens.homepage.categories
 
 import androidx.compose.foundation.background
@@ -19,18 +20,23 @@ import com.example.foodorder.data.models.Category
 import com.example.foodorder.ui.theme.*
 
 @Composable
-fun CategoryItem(category: Category, selectedIndex: MutableState<Int>, index: Int) {
+fun CategoryItem(
+    category: Category,
+    selectedIndex: MutableState<Int>,
+    index: Int,
+    onCategorySelected: (Category) -> Unit
+) {
     Box(
         modifier = Modifier
             .size(width = 106.dp, height = 146.dp)
             .clip(RoundedCornerShape(16.dp))
             .clickable {
                 selectedIndex.value = index
+                onCategorySelected(category)
             }
             .background(
                 if (selectedIndex.value == index) Yellow500 else CardItemBg
-            )
-            .clickable { selectedIndex.value = index },
+            ),
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {

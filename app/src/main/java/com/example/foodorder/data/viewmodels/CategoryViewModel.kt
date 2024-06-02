@@ -14,6 +14,9 @@ class CategoryViewModel(private val categoryRepository: CategoryRepository) : Vi
     private val _allCategories = MutableStateFlow<List<Category>>(emptyList())
     val allCategories: StateFlow<List<Category>> = _allCategories.asStateFlow()
 
+    private val _selectedCategory = MutableStateFlow<Category?>(null)
+    val selectedCategory: StateFlow<Category?> = _selectedCategory.asStateFlow()
+
     init {
         fetchAllCategories()
     }
@@ -30,5 +33,9 @@ class CategoryViewModel(private val categoryRepository: CategoryRepository) : Vi
             categoryRepository.saveCategory(category)
             fetchAllCategories()
         }
+    }
+
+    fun selectCategory(category: Category) {
+        _selectedCategory.value = category
     }
 }

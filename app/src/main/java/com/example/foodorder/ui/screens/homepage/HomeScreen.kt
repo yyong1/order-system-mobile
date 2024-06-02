@@ -4,8 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,9 +29,13 @@ fun HomeScreen(
     onPopularDataClick: (Menu) -> Unit
 ) {
     val scrollState = rememberScrollState()
-    val categories = categoryViewModel.allCategories.collectAsState().value
-    val menus = menuViewModel.allMenus.collectAsState().value
-    val popularMenus = menus.filter { it.isPopular }
+    val categories by categoryViewModel.allCategories.collectAsState()
+    val menus by menuViewModel.allMenus.collectAsState()
+    val selectedCategory by categoryViewModel.selectedCategory.collectAsState()
+
+    val filteredMenus = selectedCategory?.let { category ->
+        menus.filter { it.categoryId == category.categoryId }
+    } ?: menus
 
     Box(
         modifier = Modifier
@@ -46,12 +49,12 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(30.dp))
             SectionTitle(title = "Categories")
             Spacer(modifier = Modifier.height(20.dp))
-            CategoryList(categories = categories)
+            CategoryList(categories = categories, categoryViewModel = categoryViewModel)
             Spacer(modifier = Modifier.height(20.dp))
             SectionTitle(title = "Popular Items")
             Spacer(modifier = Modifier.height(20.dp))
             PopularList(
-                popularList = popularMenus,
+                popularList = filteredMenus,
                 navController = navController,
                 cartViewModel = cartViewModel,
                 onPopularDataClick = onPopularDataClick

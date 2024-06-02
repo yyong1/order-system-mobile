@@ -18,7 +18,7 @@ object SampleData {
     )
 
     val menus = listOf(
-        Menu(menuId = 1, restaurantId = 1, resId = R.drawable.salad_pesto_pizza, title = "Cevapi-pizza", description = "Grilled minced meat and pizza", price = 5.0, rate = 4.5, calories = 300.0, scheduleTime = 15.0, categoryId = 2, ingredients = listOf(
+        Menu(menuId = 1, restaurantId = 1, resId = R.drawable.salad_pesto_pizza, title = "Cevapi-pizza", description = "Grilled minced meat and pizza", price = 5.0, rate = 4.5, calories = 300.0, scheduleTime = 15.0, categoryId = 1, ingredients = listOf(
             R.drawable.ing1,
             R.drawable.ing2,
             R.drawable.ing3,
@@ -31,7 +31,7 @@ object SampleData {
             R.drawable.ing3,
             R.drawable.ing4,
             R.drawable.ing5,), isPopular = false),
-        Menu(menuId = 3, restaurantId = 2, resId = R.drawable.primavera_pizza, title = "Burek-pizza", description = "Pastry filled with meat and pizza", price = 4.0, rate = 4.3, calories = 250.0, scheduleTime = 10.0, categoryId = 2, ingredients = listOf(
+        Menu(menuId = 3, restaurantId = 2, resId = R.drawable.primavera_pizza, title = "Burek-pizza", description = "Pastry filled with meat and pizza", price = 4.0, rate = 4.3, calories = 250.0, scheduleTime = 10.0, categoryId = 3, ingredients = listOf(
             R.drawable.ing1,
             R.drawable.ing2,
             R.drawable.ing3,
