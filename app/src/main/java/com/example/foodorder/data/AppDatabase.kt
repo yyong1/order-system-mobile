@@ -7,12 +7,25 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.foodorder.data.dao.*
-import com.example.foodorder.data.models.*
+import com.example.foodorder.data.dao.CartDao
+import com.example.foodorder.data.dao.CategoryDao
+import com.example.foodorder.data.dao.MenuDao
+import com.example.foodorder.data.dao.OrderDao
+import com.example.foodorder.data.dao.OrderMenuDao
+import com.example.foodorder.data.dao.RestaurantDao
+import com.example.foodorder.data.dao.UserDao
+import com.example.foodorder.data.models.CartItem
+import com.example.foodorder.data.models.Category
+import com.example.foodorder.data.models.Menu
+import com.example.foodorder.data.models.Order
+import com.example.foodorder.data.models.OrderMenu
+import com.example.foodorder.data.models.Restaurant
+import com.example.foodorder.data.models.User
 import com.example.foodorder.data.sample.SampleData
-import com.example.foodorder.data.trash.*
-import com.example.foodorder.data.utils.DrawableListConverter
+import com.example.foodorder.data.trash.PopularData
+import com.example.foodorder.data.trash.PopularDataDao
 import com.example.foodorder.data.utils.DateTypeConverter
+import com.example.foodorder.data.utils.DrawableListConverter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,7 +42,7 @@ import kotlinx.coroutines.launch
         OrderMenu::class,
         CartItem::class
     ],
-    version = 6,
+    version = 8,
     exportSchema = false
 )
 @TypeConverters(DrawableListConverter::class, DateTypeConverter::class)

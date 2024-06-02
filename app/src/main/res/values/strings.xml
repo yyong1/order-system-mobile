@@ -7,9 +7,11 @@
     <string name="welcome">Welcome</string>
     <string name="sigh_in_to_continue">Sigh in to continue</string>
     <string name="don_t_have_an_account_click_here">Don\'t have an account, click here</string>
+    <string name="have_and_account">Already Have an account?, click here</string>
     <string name="sign_in">Sign in</string>
     <string name="hi">HI!</string>
     <string name="register_to_continue">Register to continue</string>
     <string name="register">Register</string>
     <string name="crown">Crown</string>
+    <string name="google_maps_api_key">\@string/api_key</string>
 </resources>

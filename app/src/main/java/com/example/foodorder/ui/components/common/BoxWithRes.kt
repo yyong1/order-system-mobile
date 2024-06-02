@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.foodorder.ui.navigation.ScreensRoutes
 import com.example.foodorder.ui.theme.CardItemBg
 import com.example.foodorder.ui.theme.IconColor
 
@@ -34,7 +35,7 @@ fun BoxWithRes(
             .size(boxSize!!.dp)
             .clip(RoundedCornerShape(10.dp))
             .clickable {
-                navController?.popBackStack()
+                navController?.navigate(ScreensRoutes.Map.route)
             }
             .background(bgColor!!), contentAlignment = Alignment.Center
     ) {
