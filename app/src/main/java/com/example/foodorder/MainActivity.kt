@@ -1,6 +1,7 @@
 package com.example.foodorder
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -8,47 +9,90 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.rememberNavController
-import com.example.foodorder.data.database.AppDatabase
-import com.example.foodorder.data.database.PopularDataRepository
-import com.example.foodorder.data.database.UserRepository
-import com.example.foodorder.ui.navigation.Navigation
+import com.example.foodorder.data.AppDatabase
+import com.example.foodorder.data.repository.*
+import com.example.foodorder.data.trash.PopularDataRepository
 import com.example.foodorder.ui.theme.FoodOrderTheme
-import com.example.foodorder.ui.viewmodels.PopularDataViewModel
-import com.example.foodorder.ui.viewmodels.PopularDataViewModelFactory
-import com.example.foodorder.ui.viewmodels.UserViewModel
-import com.example.foodorder.ui.viewmodels.UserViewModelFactory
-
+import com.example.foodorder.data.trash.PopularDataViewModel
+import com.example.foodorder.data.trash.PopularDataViewModelFactory
+import com.example.foodorder.data.viewmodels.*
+import com.example.foodorder.ui.screens.MainScreen
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     private lateinit var userViewModel: UserViewModel
     private lateinit var popularDataViewModel: PopularDataViewModel
+    private lateinit var categoryViewModel: CategoryViewModel
+    private lateinit var orderViewModel: OrderViewModel
+    private lateinit var cartViewModel: CartViewModel
+    private lateinit var menuViewModel: MenuViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("MainActivity", "onCreate triggered")
 
-        val popularDataDao = AppDatabase.getInstance(this).popularDataDao()
+        val database = AppDatabase.getInstance(this)
+
+        val popularDataDao = database.popularDataDao()
         val popularDataRepository = PopularDataRepository(popularDataDao)
         val popularDataViewModelFactory = PopularDataViewModelFactory(popularDataRepository)
         popularDataViewModel = ViewModelProvider(this, popularDataViewModelFactory)[PopularDataViewModel::class.java]
 
-        val userDao = AppDatabase.getInstance(this).userDao()
+        val menuDao = database.menuDao()
+        val menuRepository = MenuRepository(menuDao)
+        val menuViewModelFactory = MenuViewModelFactory(menuRepository)
+        menuViewModel = ViewModelProvider(this, menuViewModelFactory)[MenuViewModel::class.java]
+
+        val userDao = database.userDao()
         val userRepository = UserRepository(userDao)
         val userViewModelFactory = UserViewModelFactory(userRepository)
         userViewModel = ViewModelProvider(this, userViewModelFactory)[UserViewModel::class.java]
 
+        val categoryDao = database.categoryDao()
+        val categoryRepository = CategoryRepository(categoryDao)
+        val categoryViewModelFactory = CategoryViewModelFactory(categoryRepository)
+        categoryViewModel = ViewModelProvider(this, categoryViewModelFactory)[CategoryViewModel::class.java]
+
+        val orderDao = database.orderDao()
+        val orderRepository = OrderRepository(orderDao)
+        val orderViewModelFactory = OrderViewModelFactory(orderRepository)
+        orderViewModel = ViewModelProvider(this, orderViewModelFactory)[OrderViewModel::class.java]
+
+        val cartDao = database.cartDao()
+        val cartRepository = CartRepository(cartDao)
+        val cartViewModelFactory = CartViewModelFactory(cartRepository)
+        cartViewModel = ViewModelProvider(this, cartViewModelFactory)[CartViewModel::class.java]
+
 
         setContent {
             FoodOrderTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize()) {
                     val navController = rememberNavController()
-                    Navigation(
+                    MainScreen(
                         navController = navController,
                         userViewModel = userViewModel,
-                        popularDataViewModel = popularDataViewModel
+                        popularDataViewModel = popularDataViewModel,
+                        categoryViewModel = categoryViewModel,
+                        orderViewModel = orderViewModel,
+                        cartViewModel = cartViewModel,
+                        menuViewModel = menuViewModel
                     )
                 }
             }
         }
+
+        // Recreate and populate the database
+        CoroutineScope(Dispatchers.IO).launch {
+            recreateAndPopulateDatabase(database)
+        }
+    }
+
+    private suspend fun recreateAndPopulateDatabase(database: AppDatabase) {
+        AppDatabase.clearAllTables(database)
+        AppDatabase.populateDatabase(database)
     }
 }
+

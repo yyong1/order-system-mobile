@@ -1,15 +1,31 @@
 package com.example.foodorder.data.dao
 
+import android.provider.ContactsContract.CommonDataKinds.Email
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.foodorder.data.models.User
 
+
 @Dao
 interface UserDao {
-    @Query("SELECT * FROM users WHERE email = :userEmail")
-    suspend fun getUserByEmail(userEmail: String): User?
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(users: List<User>)
 
-    @Insert
-    suspend fun insertUser(user: User)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(user: User)
+
+    @Query("SELECT * FROM users WHERE id = :userId")
+    suspend fun getUserById(userId: Int): User?
+
+    @Query("SELECT * FROM users WHERE email = :email")
+    suspend fun getUserByEmail(email: String): User?
+
+    @Query("SELECT * FROM users")
+    suspend fun getAllUsers(): List<User>
+
+    @Query("UPDATE users SET name = :name, email = :email, favoriteRestaurant = :favoriteRestaurant WHERE id = :userId")
+    suspend fun updateUser(userId: Int, name: String, email: String, favoriteRestaurant: String)
+
 }
