@@ -17,6 +17,10 @@ class MenuViewModel(private val repository: MenuRepository) : ViewModel() {
     fun saveMenu(menu: Menu) = viewModelScope.launch {
         repository.saveMenu(menu)
     }
+    fun getMenusByRestaurantId(restaurantId: Int): StateFlow<List<Menu>> {
+        return repository.getMenusByRestaurantId(restaurantId)
+            .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+    }
 
 //    fun getAllMenus() = viewModelScope.launch {
 //        repository.getAllMenus()

@@ -20,4 +20,7 @@ interface MenuDao {
 
     @Query("SELECT * FROM menus")
     fun getAllMenus(): Flow<List<Menu>>
+
+    @Query("SELECT * FROM menus WHERE restaurantId = :restaurantId")
+    fun getMenusByRestaurantId(restaurantId: Int): Flow<List<Menu>>
 }

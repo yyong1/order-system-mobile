@@ -2,6 +2,7 @@ package com.example.foodorder.ui.screens.map
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
@@ -15,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,53 +28,82 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.foodorder.R
+import com.example.foodorder.data.models.Menu
+import com.example.foodorder.data.viewmodels.MenuViewModel
+import com.example.foodorder.data.viewmodels.RestaurantViewModel
 import com.example.foodorder.ui.navigation.ScreensRoutes
+import com.example.foodorder.ui.screens.homepage.popular.PopularList
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
-data class Restaurant(
+data class RestaurantData(
+    val id: Int,
     val name: String,
     val location: LatLng,
     val description: String
 )
 
-val restaurantList = listOf(
-    Restaurant("Restaurant 1", LatLng(43.855, 18.415), "Description of Restaurant 1"),
-    Restaurant("Restaurant 2", LatLng(43.854, 18.414), "Description of Restaurant 2"),
-    Restaurant("Restaurant 3", LatLng(43.853, 18.413), "Description of Restaurant 3")
-)
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MapScreen(navController: NavHostController) {
+fun MapScreen(
+    navController: NavHostController,
+    restaurantViewModel: RestaurantViewModel,
+    menuViewModel: MenuViewModel
+) {
+
+    val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
+
+    var restaurants by remember { mutableStateOf<List<RestaurantData>>(emptyList()) }
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.Builder()
-            .target(restaurantList.firstOrNull()?.location ?: LatLng(0.0, 0.0))
+            .target(restaurants.firstOrNull()?.location ?: LatLng(0.0, 0.0))
             .zoom(16f)
             .build()
     }
-    val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
-    val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
-    var selectedRestaurant by remember { mutableStateOf<Restaurant?>(null) }
+
+    val bottomSheetState =
+        rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    var selectedRestaurant by remember { mutableStateOf<RestaurantData?>(null) }
+
+    LaunchedEffect(Unit) {
+        restaurantViewModel.fetchAllRestaurants()
+        val fetchedRestaurants = restaurantViewModel.allRestaurants.first()
+        Log.d("Res", "$fetchedRestaurants")
+        restaurants = fetchedRestaurants.map { restaurant ->
+            RestaurantData(
+                restaurant.id,
+                restaurant.name,
+                LatLng(restaurant.locationLatitude, restaurant.locationLongitude),
+                restaurant.name
+            )
+        }
+        cameraPositionState.position = CameraPosition.Builder()
+            .target(restaurants.firstOrNull()?.location ?: LatLng(0.0, 0.0))
+            .zoom(16f)
+            .build()
+    }
 
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetContent = {
             selectedRestaurant?.let { restaurant ->
-                RestaurantInfoSheet(restaurant)
+                RestaurantInfoSheet(restaurant, menuViewModel, navController)
             }
         }
     ) {
         GoogleMap(
             cameraPositionState = cameraPositionState,
         ) {
-            restaurantList.forEach { restaurant ->
+            restaurants.forEach { restaurant ->
                 Marker(
                     position = restaurant.location,
                     title = restaurant.name,
@@ -86,7 +117,7 @@ fun MapScreen(navController: NavHostController) {
                         )
                     ),
                     onClick = { marker ->
-                        selectedRestaurant = restaurantList.firstOrNull { it.name == marker.title }
+                        selectedRestaurant = restaurants.firstOrNull { it.name == marker.title }
                         if (selectedRestaurant != null) {
                             coroutineScope.launch {
                                 bottomSheetState.show()
@@ -97,6 +128,7 @@ fun MapScreen(navController: NavHostController) {
                 )
             }
         }
+
         FloatingActionButton(
             onClick = { navController.navigate(ScreensRoutes.Home.route) },
             modifier = Modifier.padding(10.dp),
@@ -108,10 +140,20 @@ fun MapScreen(navController: NavHostController) {
 }
 
 @Composable
-fun RestaurantInfoSheet(restaurant: Restaurant) {
+fun RestaurantInfoSheet(restaurant: RestaurantData, menuViewModel: MenuViewModel, navController: NavHostController) {
+    var menu by remember { mutableStateOf<List<Menu>>(emptyList()) }
+
+    LaunchedEffect(restaurant) {
+       // Fetch menu for the current restaurant
+       val menuForRestaurant = menuViewModel.getMenusByRestaurantId(restaurant.id).firstOrNull()
+        if (menuForRestaurant != null) {
+            menu = menuForRestaurant
+        }
+   }
+
     Column(modifier = Modifier.padding(16.dp)) {
         Text(text = restaurant.name, style = MaterialTheme.typography.h6)
         Text(text = restaurant.description, style = MaterialTheme.typography.body1)
-        // Add more details and styling as needed
+        PopularList(popularList = menu, navController, onPopularDataClick = {})
     }
 }

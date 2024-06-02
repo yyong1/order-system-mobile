@@ -9,4 +9,7 @@ class MenuRepository(private val menuDao: MenuDao) {
     fun getAllMenus(): Flow<List<Menu>> {
         return menuDao.getAllMenus()
     }
+    fun getMenusByRestaurantId(restaurantId: Int): Flow<List<Menu>> {
+        return menuDao.getMenusByRestaurantId(restaurantId)
+    }
 }

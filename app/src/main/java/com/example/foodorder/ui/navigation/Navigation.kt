@@ -12,14 +12,15 @@ import com.example.foodorder.data.viewmodels.CartViewModel
 import com.example.foodorder.data.viewmodels.CategoryViewModel
 import com.example.foodorder.data.viewmodels.MenuViewModel
 import com.example.foodorder.data.viewmodels.OrderViewModel
+import com.example.foodorder.data.viewmodels.RestaurantViewModel
 import com.example.foodorder.data.viewmodels.UserViewModel
 import com.example.foodorder.ui.screens.cart.CartScreen
 import com.example.foodorder.ui.screens.details.DetailsScreen
 import com.example.foodorder.ui.screens.homepage.HomeScreen
-import com.example.foodorder.ui.screens.log.LoginScreen
+import com.example.foodorder.ui.screens.login.LoginScreen
 import com.example.foodorder.ui.screens.map.MapScreen
 import com.example.foodorder.ui.screens.profile.UserProfileScreen
-import com.example.foodorder.ui.screens.reg.RegistrationScreen
+import com.example.foodorder.ui.screens.register.RegistrationScreen
 
 @Composable
 fun Navigation(
@@ -30,6 +31,7 @@ fun Navigation(
     orderViewModel: OrderViewModel,
     cartViewModel: CartViewModel,
     menuViewModel: MenuViewModel,
+    restaurantViewModel: RestaurantViewModel,
     modifier: Modifier = Modifier
 ) {
     NavHost(
@@ -56,7 +58,7 @@ fun Navigation(
             menuId?.let { DetailsScreen(navController = navController, menuId = it, menuViewModel = menuViewModel) }
         }
         composable(ScreensRoutes.Map.route) {
-            MapScreen(navController)
+            MapScreen(navController, restaurantViewModel, menuViewModel)
         }
         composable(ScreensRoutes.Profile.route) {
             UserProfileScreen(userViewModel = userViewModel, orderViewModel = orderViewModel)

@@ -7,12 +7,21 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.example.foodorder.data.trash.PopularDataViewModel
-import com.example.foodorder.data.viewmodels.*
+import com.example.foodorder.data.viewmodels.CartViewModel
+import com.example.foodorder.data.viewmodels.CategoryViewModel
+import com.example.foodorder.data.viewmodels.MenuViewModel
+import com.example.foodorder.data.viewmodels.OrderViewModel
+import com.example.foodorder.data.viewmodels.RestaurantViewModel
+import com.example.foodorder.data.viewmodels.UserViewModel
 import com.example.foodorder.ui.components.navigation.BottomNavBar
 import com.example.foodorder.ui.components.navigation.BottomNavItem
 import com.example.foodorder.ui.navigation.Navigation
@@ -26,7 +35,8 @@ fun MainScreen(
     categoryViewModel: CategoryViewModel,
     orderViewModel: OrderViewModel,
     cartViewModel: CartViewModel,
-    menuViewModel: MenuViewModel
+    menuViewModel: MenuViewModel,
+    restaurantViewModel: RestaurantViewModel,
 ) {
     val bottomNavItems = listOf(
         BottomNavItem("Home", ScreensRoutes.Home.route, Icons.Default.Home),
@@ -58,6 +68,7 @@ fun MainScreen(
             orderViewModel = orderViewModel,
             cartViewModel = cartViewModel,
             menuViewModel = menuViewModel,
+            restaurantViewModel = restaurantViewModel,
             modifier = Modifier.padding(innerPadding)
         )
     }
