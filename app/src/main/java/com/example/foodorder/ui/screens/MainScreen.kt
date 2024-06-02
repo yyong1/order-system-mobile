@@ -15,7 +15,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import com.example.foodorder.data.trash.PopularDataViewModel
 import com.example.foodorder.data.viewmodels.CartViewModel
 import com.example.foodorder.data.viewmodels.CategoryViewModel
 import com.example.foodorder.data.viewmodels.MenuViewModel
@@ -31,7 +30,6 @@ import com.example.foodorder.ui.navigation.ScreensRoutes
 fun MainScreen(
     navController: NavHostController,
     userViewModel: UserViewModel,
-    popularDataViewModel: PopularDataViewModel,
     categoryViewModel: CategoryViewModel,
     orderViewModel: OrderViewModel,
     cartViewModel: CartViewModel,
@@ -63,7 +61,6 @@ fun MainScreen(
         Navigation(
             navController = navController,
             userViewModel = userViewModel,
-            popularDataViewModel = popularDataViewModel,
             categoryViewModel = categoryViewModel,
             orderViewModel = orderViewModel,
             cartViewModel = cartViewModel,

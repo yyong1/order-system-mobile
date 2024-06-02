@@ -7,7 +7,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.foodorder.data.trash.PopularDataViewModel
 import com.example.foodorder.data.viewmodels.CartViewModel
 import com.example.foodorder.data.viewmodels.CategoryViewModel
 import com.example.foodorder.data.viewmodels.MenuViewModel
@@ -26,7 +25,6 @@ import com.example.foodorder.ui.screens.register.RegistrationScreen
 fun Navigation(
     navController: NavHostController,
     userViewModel: UserViewModel,
-    popularDataViewModel: PopularDataViewModel,
     categoryViewModel: CategoryViewModel,
     orderViewModel: OrderViewModel,
     cartViewModel: CartViewModel,
@@ -58,7 +56,7 @@ fun Navigation(
             menuId?.let { DetailsScreen(navController = navController, menuId = it, menuViewModel = menuViewModel, cartViewModel = cartViewModel) }
         }
         composable(ScreensRoutes.Map.route) {
-            MapScreen(navController, restaurantViewModel, menuViewModel)
+            MapScreen(navController, restaurantViewModel, cartViewModel, menuViewModel)
         }
         composable(ScreensRoutes.Profile.route) {
             UserProfileScreen(userViewModel = userViewModel, orderViewModel = orderViewModel)

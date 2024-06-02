@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.foodorder.R
 import com.example.foodorder.data.models.Menu
+import com.example.foodorder.data.viewmodels.CartViewModel
 import com.example.foodorder.data.viewmodels.MenuViewModel
 import com.example.foodorder.data.viewmodels.RestaurantViewModel
 import com.example.foodorder.ui.navigation.ScreensRoutes
@@ -56,6 +57,7 @@ data class RestaurantData(
 fun MapScreen(
     navController: NavHostController,
     restaurantViewModel: RestaurantViewModel,
+    cartViewModel: CartViewModel,
     menuViewModel: MenuViewModel
 ) {
 
@@ -96,7 +98,7 @@ fun MapScreen(
         sheetState = bottomSheetState,
         sheetContent = {
             selectedRestaurant?.let { restaurant ->
-                RestaurantInfoSheet(restaurant, menuViewModel, navController)
+                RestaurantInfoSheet(restaurant, menuViewModel, cartViewModel, navController)
             }
         }
     ) {
@@ -140,20 +142,19 @@ fun MapScreen(
 }
 
 @Composable
-fun RestaurantInfoSheet(restaurant: RestaurantData, menuViewModel: MenuViewModel, navController: NavHostController) {
+fun RestaurantInfoSheet(restaurant: RestaurantData, menuViewModel: MenuViewModel, cartViewModel: CartViewModel, navController: NavHostController) {
     var menu by remember { mutableStateOf<List<Menu>>(emptyList()) }
 
     LaunchedEffect(restaurant) {
-       // Fetch menu for the current restaurant
-       val menuForRestaurant = menuViewModel.getMenusByRestaurantId(restaurant.id).firstOrNull()
+        val menuForRestaurant = menuViewModel.getMenusByRestaurantId(restaurant.id).firstOrNull()
         if (menuForRestaurant != null) {
             menu = menuForRestaurant
         }
-   }
+    }
 
     Column(modifier = Modifier.padding(16.dp)) {
         Text(text = restaurant.name, style = MaterialTheme.typography.h6)
         Text(text = restaurant.description, style = MaterialTheme.typography.body1)
-        PopularList(popularList = menu, navController, onPopularDataClick = {})
+        PopularList(popularList = menu, navController, cartViewModel = cartViewModel, onPopularDataClick = {})
     }
 }

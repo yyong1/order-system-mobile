@@ -22,8 +22,6 @@ import com.example.foodorder.data.models.OrderMenu
 import com.example.foodorder.data.models.Restaurant
 import com.example.foodorder.data.models.User
 import com.example.foodorder.data.sample.SampleData
-import com.example.foodorder.data.trash.PopularData
-import com.example.foodorder.data.trash.PopularDataDao
 import com.example.foodorder.data.utils.DateTypeConverter
 import com.example.foodorder.data.utils.DrawableListConverter
 import kotlinx.coroutines.CoroutineScope
@@ -34,7 +32,6 @@ import kotlinx.coroutines.launch
 @Database(
     entities = [
         User::class,
-        PopularData::class,
         Category::class,
         Menu::class,
         Restaurant::class,
@@ -48,7 +45,6 @@ import kotlinx.coroutines.launch
 @TypeConverters(DrawableListConverter::class, DateTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
-    abstract fun popularDataDao(): PopularDataDao
     abstract fun categoryDao(): CategoryDao
     abstract fun menuDao(): MenuDao
     abstract fun restaurantDao(): RestaurantDao

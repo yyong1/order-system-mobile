@@ -16,9 +16,6 @@ import com.example.foodorder.data.repository.MenuRepository
 import com.example.foodorder.data.repository.OrderRepository
 import com.example.foodorder.data.repository.RestaurantRepository
 import com.example.foodorder.data.repository.UserRepository
-import com.example.foodorder.data.trash.PopularDataRepository
-import com.example.foodorder.data.trash.PopularDataViewModel
-import com.example.foodorder.data.trash.PopularDataViewModelFactory
 import com.example.foodorder.data.viewmodels.CartViewModel
 import com.example.foodorder.data.viewmodels.CartViewModelFactory
 import com.example.foodorder.data.viewmodels.CategoryViewModel
@@ -39,7 +36,6 @@ import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     private lateinit var userViewModel: UserViewModel
-    private lateinit var popularDataViewModel: PopularDataViewModel
     private lateinit var categoryViewModel: CategoryViewModel
     private lateinit var orderViewModel: OrderViewModel
     private lateinit var cartViewModel: CartViewModel
@@ -56,11 +52,6 @@ class MainActivity : ComponentActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             recreateAndPopulateDatabase(database)
         }
-
-        val popularDataDao = database.popularDataDao()
-        val popularDataRepository = PopularDataRepository(popularDataDao)
-        val popularDataViewModelFactory = PopularDataViewModelFactory(popularDataRepository)
-        popularDataViewModel = ViewModelProvider(this, popularDataViewModelFactory)[PopularDataViewModel::class.java]
 
         val menuDao = database.menuDao()
         val menuRepository = MenuRepository(menuDao)
@@ -100,7 +91,6 @@ class MainActivity : ComponentActivity() {
                     MainScreen(
                         navController = navController,
                         userViewModel = userViewModel,
-                        popularDataViewModel = popularDataViewModel,
                         categoryViewModel = categoryViewModel,
                         orderViewModel = orderViewModel,
                         cartViewModel = cartViewModel,
