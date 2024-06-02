@@ -11,4 +11,8 @@ data class User(
     val email: String,
     val password: String,
     val favoriteRestaurant: String
-)
+){
+    fun isEmpty(): Boolean {
+        return email.isEmpty()
+    }
+}

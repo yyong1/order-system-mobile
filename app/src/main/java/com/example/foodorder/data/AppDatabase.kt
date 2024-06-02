@@ -7,27 +7,15 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.foodorder.data.dao.CartDao
-import com.example.foodorder.data.dao.CategoryDao
-import com.example.foodorder.data.dao.MenuDao
-import com.example.foodorder.data.dao.OrderDao
-import com.example.foodorder.data.dao.OrderMenuDao
-import com.example.foodorder.data.dao.RestaurantDao
-import com.example.foodorder.data.dao.UserDao
-import com.example.foodorder.data.models.CartItem
-import com.example.foodorder.data.models.Category
-import com.example.foodorder.data.models.Menu
-import com.example.foodorder.data.models.Order
-import com.example.foodorder.data.models.OrderMenu
-import com.example.foodorder.data.models.Restaurant
-import com.example.foodorder.data.models.User
+import com.example.foodorder.data.dao.*
+import com.example.foodorder.data.models.*
 import com.example.foodorder.data.sample.SampleData
 import com.example.foodorder.data.utils.DateTypeConverter
 import com.example.foodorder.data.utils.DrawableListConverter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-
 
 @Database(
     entities = [
@@ -39,7 +27,7 @@ import kotlinx.coroutines.launch
         OrderMenu::class,
         CartItem::class
     ],
-    version = 8,
+    version = 9,
     exportSchema = false
 )
 @TypeConverters(DrawableListConverter::class, DateTypeConverter::class)
@@ -51,8 +39,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun orderDao(): OrderDao
     abstract fun orderMenuDao(): OrderMenuDao
     abstract fun cartDao(): CartDao
-
-
 
     companion object {
         @Volatile
@@ -88,12 +74,35 @@ abstract class AppDatabase : RoomDatabase() {
             override fun onOpen(db: SupportSQLiteDatabase) {
                 super.onOpen(db)
                 Log.d("AppDatabase", "Database onOpen callback triggered")
+                INSTANCE?.let { database ->
+                    CoroutineScope(Dispatchers.IO).launch {
+                        if (isDatabaseEmpty(database)) {
+                            Log.d("AppDatabase", "Database is empty, populating with sample data")
+                            populateDatabase(database)
+                        } else {
+                            Log.d("AppDatabase", "Database already populated, skipping initial population")
+                        }
+                    }
+                }
             }
         }
 
-        suspend fun clearAllTables(database: AppDatabase) {
-            database.clearAllTables()
-            Log.d("AppDatabase", "All tables cleared")
+        private suspend fun isDatabaseEmpty(database: AppDatabase): Boolean {
+            val userDao = database.userDao()
+            val categoryDao = database.categoryDao()
+            val restaurantDao = database.restaurantDao()
+            val menuDao = database.menuDao()
+            val orderDao = database.orderDao()
+            val orderMenuDao = database.orderMenuDao()
+
+            val areUsersEmpty = userDao.getAllUsers().firstOrNull()?.isEmpty() ?: true
+            val areCategoriesEmpty = categoryDao.getAllCategories().firstOrNull()?.isEmpty() ?: true
+            val areRestaurantsEmpty = restaurantDao.getAllRestaurants().firstOrNull()?.isEmpty() ?: true
+            val areMenusEmpty = menuDao.getAllMenus().firstOrNull()?.isEmpty() ?: true
+            val areOrdersEmpty = orderDao.getAllOrders().firstOrNull()?.isEmpty() ?: true
+            val areOrderMenusEmpty = orderMenuDao.getAllOrderMenus().firstOrNull()?.isEmpty() ?: true
+
+            return areUsersEmpty && areCategoriesEmpty && areRestaurantsEmpty && areMenusEmpty && areOrdersEmpty && areOrderMenusEmpty
         }
 
         suspend fun populateDatabase(database: AppDatabase) {

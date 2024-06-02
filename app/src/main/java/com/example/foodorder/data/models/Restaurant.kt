@@ -11,4 +11,8 @@ data class Restaurant(
     val locationLatitude: Double,
     val locationLongitude: Double,
     val isPopular: Boolean = false
-)
+){
+    fun isEmpty(): Boolean {
+        return name.isEmpty()
+    }
+}

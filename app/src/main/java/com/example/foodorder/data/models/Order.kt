@@ -18,4 +18,8 @@ data class Order(
     val restaurantId: Int,
     val orderDate: String,
     val totalPrice: Double
-)
+){
+    fun isEmpty(): Boolean {
+        return totalPrice == 0.0
+    }
+}

@@ -28,4 +28,8 @@ data class Menu(
     @TypeConverters(DrawableListConverter::class)
     val ingredients: List<Int>,
     val isPopular: Boolean = false
-)
+){
+    fun isEmpty(): Boolean {
+        return title.isEmpty()
+    }
+}

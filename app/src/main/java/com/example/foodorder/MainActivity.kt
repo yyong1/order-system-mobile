@@ -105,7 +105,6 @@ class MainActivity : ComponentActivity() {
     }
 
     private suspend fun recreateAndPopulateDatabase(database: AppDatabase) {
-        AppDatabase.clearAllTables(database)
         AppDatabase.populateDatabase(database)
     }
 }

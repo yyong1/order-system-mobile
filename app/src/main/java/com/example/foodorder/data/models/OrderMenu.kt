@@ -14,4 +14,8 @@ data class OrderMenu(
     val orderId: Int,
     val menuId: Int,
     val quantity: Int
-)
+){
+    fun isEmpty(): Boolean {
+        return quantity == 0
+    }
+}

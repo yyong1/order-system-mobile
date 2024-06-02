@@ -10,4 +10,8 @@ data class CartItem(
     val menuItemName: String,
     val menuItemPrice: Double,
     val quantity: Int
-)
+) {
+    fun isEmpty(): Boolean {
+        return quantity == 0
+    }
+}

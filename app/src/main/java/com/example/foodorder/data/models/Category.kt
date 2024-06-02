@@ -9,4 +9,8 @@ data class Category(
     val categoryId: Int = 0,
     val name: String,
     val iconResId: Int
-)
+){
+    fun isEmpty(): Boolean {
+        return name.isEmpty()
+    }
+}
