@@ -16,18 +16,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.foodorder.R
-import com.example.foodorder.data.models.Menu
 import com.example.foodorder.data.viewmodels.MenuViewModel
 import com.example.foodorder.ui.components.common.BoxWithRes
 import com.example.foodorder.ui.theme.*
 
+
 @Composable
-fun DetailsScreen(navController: NavController, menuId: Int) {
-    val menuViewModel: MenuViewModel = viewModel()
-    val menuItem = menuViewModel.allMenus.collectAsState(initial = emptyList()).value.find { it.menuId == menuId }
+fun DetailsScreen(navController: NavController, menuId: Int, menuViewModel: MenuViewModel) {
+    val menus by menuViewModel.allMenus.collectAsState(initial = emptyList())
+    val menuItem = menus.find { it.menuId == menuId }
+
     menuItem?.let { data ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
