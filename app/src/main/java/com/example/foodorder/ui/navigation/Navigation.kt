@@ -3,8 +3,10 @@ package com.example.foodorder.ui.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.foodorder.ui.screens.details.DetailsScreen
 import com.example.foodorder.ui.screens.homepage.HomeScreen
 import com.example.foodorder.ui.screens.log.LoginScreen
@@ -36,15 +38,9 @@ fun Navigation(
         modifier = modifier
     ) {
         composable(ScreensRoutes.Home.route) {
-            HomeScreen(
-                navController = navController,
-//                popularDataViewModel = popularDataViewModel,
-                menuViewModel = menuViewModel,
-                categoryViewModel = categoryViewModel,
-                onPopularDataClick = { popularData ->
-                    navController.navigate("${ScreensRoutes.Details.route}/${popularData.title}")
-                }
-            )
+            HomeScreen(navController = navController, menuViewModel = menuViewModel, categoryViewModel = categoryViewModel, onPopularDataClick = {
+                navController.navigate("details/${it.menuId}")
+            })
         }
         composable(ScreensRoutes.Login.route) {
             LoginScreen(navController = navController, userViewModel = userViewModel)
@@ -52,15 +48,18 @@ fun Navigation(
         composable(ScreensRoutes.Registration.route) {
             RegistrationScreen(navController = navController, userViewModel = userViewModel)
         }
-        composable(ScreensRoutes.Details.route) { backStackEntry ->
-            val title = backStackEntry.arguments?.getString("title")
-            DetailsScreen(navController = navController, popularDataTitle = title ?: "")
+        composable(
+            "details/{menuId}",
+            arguments = listOf(navArgument("menuId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val menuId = backStackEntry.arguments?.getInt("menuId")
+            menuId?.let { DetailsScreen(navController = navController, menuId = it) }
         }
         composable(ScreensRoutes.Map.route) {
             MapScreen()
         }
         composable(ScreensRoutes.Profile.route) {
-             UserProfileScreen(userViewModel = userViewModel, orderViewModel = orderViewModel)
+            UserProfileScreen(userViewModel = userViewModel, orderViewModel = orderViewModel)
         }
         composable(ScreensRoutes.Cart.route) {
             CartScreen(cartViewModel = cartViewModel, navController = navController)

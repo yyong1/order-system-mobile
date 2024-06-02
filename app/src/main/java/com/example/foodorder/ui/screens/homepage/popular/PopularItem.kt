@@ -40,7 +40,7 @@ fun PopularItem(
                     .padding(end = 13.dp)
                     .clip(RoundedCornerShape(18.dp))
                     .clickable {
-                        onPopularDataClick(popularData)
+                        navController.navigate("details/${popularData.menuId}")
                     }
                     .background(CardItemBg)
             ) {
